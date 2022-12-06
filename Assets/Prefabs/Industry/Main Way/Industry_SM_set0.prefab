@@ -219,8 +219,8 @@ MonoBehaviour:
       m_FlipU: 0
       m_FlipV: 0
       m_SwapUV: 0
-      m_Fill: 1
-      m_Scale: {x: 1, y: 1}
+      m_Fill: 0
+      m_Scale: {x: 3, y: 3}
       m_Offset: {x: 0, y: 0}
       m_Rotation: 0
       m_Anchor: 9
@@ -298,10 +298,10 @@ MonoBehaviour:
   - {x: -30, y: -0.5}
   - {x: 30, y: 0.5}
   - {x: -30, y: 0.5}
-  - {x: -10, y: 30}
-  - {x: 10, y: 30}
-  - {x: -10, y: -30}
-  - {x: 10, y: -30}
+  - {x: -0.5, y: 1.5}
+  - {x: 0.5, y: 1.5}
+  - {x: -0.5, y: -1.5}
+  - {x: 0.5, y: -1.5}
   - {x: 10, y: -30}
   - {x: -10, y: -30}
   - {x: 10, y: 30}
@@ -342,7 +342,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1454
+  m_VersionIndex: 1466
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []

@@ -22,37 +22,60 @@ public class UIManager : MonoBehaviour
 
     public float speed;
 
-    [Header("HPSiderPositionX")]
-    public float hpONPosX;
-    public float hpOFFPosX;
+    public Vector3 hpON;
+    public Vector3 hpOFF;
 
-    [Header("HPSiderPositionY")]
-    public float hpONPosY;
-    public float hpOFFPosY;
+    public Vector3 distON;
+    public Vector3 distOFF;
 
-    [Header("DistancePositionX")]
-    public float distONPosX;
-    public float distOFFPosX;
+    public Vector3 biomeON;
+    public Vector3 biomeOFF;
 
-    [Header("DistancePositionY")]
-    public float distONPosY;
-    public float distOFFPosY;
-    
-    [Header("BiomePositionX")]
-    public float biomeONPosX;
-    public float biomeOFFPosX;
+    public Vector3 hintsON;
+    public Vector3 hintsOFF;
 
-    [Header("BiomePositionY")]
-    public float biomeONPosY;
-    public float biomeOFFPosY;
-    
-    [Header("HintsPositionX")]
-    public float hintsONPosX;
-    public float hintsOFFPosX;
+    public Vector3 blackStripeON;
+    public Vector3 blackStripeOFF;
+ 
+    //[Header("HPSiderPositionX")]
+    private float hpONPosX;
+    private float hpOFFPosX;
 
-    [Header("HintsPositionY")]
-    public float hintsONPosY;
-    public float hintsOFFPosY;
+    //[Header("HPSiderPositionY")]
+    private float hpONPosY;
+    private float hpOFFPosY;
+
+    //[Header("DistancePositionX")]
+    private float distONPosX;
+    private float distOFFPosX;
+
+    //[Header("DistancePositionY")]
+    private float distONPosY;
+    private float distOFFPosY;
+
+    //[Header("BiomePositionX")]
+    private float biomeONPosX;
+    private float biomeOFFPosX;
+
+    //[Header("BiomePositionY")]
+    private float biomeONPosY;
+    private float biomeOFFPosY;
+
+    //[Header("HintsPositionX")]
+    private float hintsONPosX;
+    private float hintsOFFPosX;
+
+    //[Header("HintsPositionY")]
+    private float hintsONPosY;
+    private float hintsOFFPosY;
+
+    //[Header("BlackStripesPositionX")]
+    private float stripesONPosX;
+    private float stripesOFFPosX;
+
+    //[Header("HintsPositionY")]
+    private float stripesONPosY;
+    private float stripesOFFPosY;
 
     public GameObject biomeObject;
     private RectTransform biomeTransform;
@@ -73,8 +96,46 @@ public class UIManager : MonoBehaviour
     private Vector2 hintsPos;
     public int showHints;
 
+    public GameObject stripeUPObject;
+    private RectTransform stripeUPTransform;
+    private Vector2 stripeUPPos;
+
+    public GameObject stripeDownObject;
+    private RectTransform stripeDownTransform;
+    private Vector2 stripeDownPos;
+    public bool showStripes;
     void Start()
     {
+        hpONPosX = hpON.x;
+        hpONPosY = hpON.y;
+
+        hpOFFPosX = hpOFF.x;
+        hpOFFPosY = hpOFF.y;
+
+        distONPosX = distON.x;
+        distONPosY = distON.y;
+
+        distOFFPosX = distOFF.x;
+        distOFFPosY = distOFF.y;
+
+        biomeONPosX = biomeON.x;
+        biomeONPosY = biomeON.y;
+
+        biomeOFFPosX = biomeOFF.x;
+        biomeOFFPosY = biomeOFF.y;
+
+        hintsONPosX = hintsON.x;
+        hintsONPosY = hintsON.y;
+
+        hintsOFFPosX = hintsOFF.x;
+        hintsOFFPosY = hintsOFF.y;
+
+        stripesONPosX = blackStripeON.x;
+        stripesONPosY = blackStripeON.y;
+
+        stripesOFFPosX = blackStripeOFF.x;
+        stripesOFFPosY = blackStripeOFF.y;
+
         runON = false;
         pauseON = false;
         sliderTransform = HPBar.GetComponent<RectTransform>();
@@ -99,6 +160,13 @@ public class UIManager : MonoBehaviour
         showHints = PlayerPrefs.GetInt("hintsON");
         hintsTransform = hintsObject.GetComponent<RectTransform>();
         hintsPos = hintsTransform.anchoredPosition;
+        
+        stripeUPTransform = stripeUPObject.GetComponent<RectTransform>();
+        stripeUPPos = stripeUPTransform.anchoredPosition;
+        
+        stripeDownTransform = stripeDownObject.GetComponent<RectTransform>();
+        stripeDownPos = stripeDownTransform.anchoredPosition;
+        showStripes = false;
     }
 
     void Update()
@@ -107,11 +175,26 @@ public class UIManager : MonoBehaviour
         distanceText.text = "Distance " + distTr.distanceScaled.ToString() + "m";
         if (showBiome)
         {
-            biomeObject.transform.localPosition = Vector3.MoveTowards(biomeObject.transform.localPosition, new Vector3(biomePos.x + biomeONPosX , biomePos.y + biomeONPosY), step * 30);
-            Invoke(nameof(BiomeTextHide), 4f);
+            stripeUPObject.transform.localPosition = Vector3.MoveTowards(stripeUPObject.transform.localPosition, new Vector3(stripeUPPos.x + stripesONPosX , stripeUPPos.y + stripesONPosY), step * 30);
+            stripeDownObject.transform.localPosition = Vector3.MoveTowards(stripeDownObject.transform.localPosition, new Vector3(stripeDownPos.x - stripesONPosX , stripeDownPos.y - stripesONPosY), step * 30);
+            if (showStripes)
+            {
+                biomeObject.transform.localPosition = Vector3.MoveTowards(biomeObject.transform.localPosition, new Vector3(biomePos.x + biomeONPosX, biomePos.y + biomeONPosY), step * 30);
+            }
+            else
+            {
+                biomeObject.transform.localPosition = Vector3.MoveTowards(biomeObject.transform.localPosition, new Vector3(biomePos.x + biomeOFFPosX, biomePos.y + biomeOFFPosY), step * 30);
+                Invoke(nameof(BlackStripesHide), 4f);
+
+            }
+            Invoke(nameof(BiomeTextHide), 5f);
+
         }
         else
         {
+            
+            stripeUPObject.transform.localPosition = Vector3.MoveTowards(stripeUPObject.transform.localPosition, new Vector3(stripeUPPos.x + stripesOFFPosX, stripeUPPos.y + stripesOFFPosY), step * 30);
+            stripeDownObject.transform.localPosition = Vector3.MoveTowards(stripeDownObject.transform.localPosition, new Vector3(stripeDownPos.x - stripesOFFPosX, stripeDownPos.y - stripesOFFPosY), step * 30);
             biomeObject.transform.localPosition = Vector3.MoveTowards(biomeObject.transform.localPosition, new Vector3(biomePos.x + biomeOFFPosX, biomePos.y + biomeOFFPosY), step * 30);
         }
 
@@ -159,10 +242,20 @@ public class UIManager : MonoBehaviour
     public void BiomeTextShowUP()
     {
         showBiome = true;
+        Invoke(nameof(BlackStripesShow), 1.5f);
     }
     public void BiomeTextHide()
     {
         showBiome = false;
+    }
+
+    public void BlackStripesShow()
+    {
+        showStripes = true;
+    }
+    public void BlackStripesHide()
+    {
+        showStripes = false;
     }
     
     public void ChangeHintsStatus()
