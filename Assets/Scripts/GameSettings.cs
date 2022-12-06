@@ -47,39 +47,56 @@ public class GameSettings : MonoBehaviour
     }
     public int GetBaseSpeed()
     {
-        if (difficulty == 0)
+        return difficulty switch
         {
-            return 10; //easy
-        }
-        else
-        {
-            if (difficulty == 1)
-            {
-                return 15;//medium
-            }
-            else
-            {
-                return 20;//hard
-            }
-        }
+            0 => 15,
+            1 => 25,
+            2 => 30,
+            _ => 20,
+        };
     }
-
     public int GetRunSpeed()
     {
-        if (difficulty == 0)
+        return difficulty switch
         {
-            return 15;//easy
+            0 => 20,
+            1 => 30,
+            2 => 35,
+            _ => 25,
+        };
+    }
+
+    public float GetAnimBaseSpeed()
+    {
+        return difficulty switch
+        {
+            0 => 0.9f,
+            1 => 1.25f,
+            2 => 1.5f,
+            _ => 1f,
+        };
+    }
+    public float GetAnimRunSpeed()
+    {
+        return difficulty switch
+        {
+            0 => 1.2f,
+            1 => 1.5f,
+            2 => 2f,
+            _ => 1f,
+        };
+    }
+
+
+    public int GetDamge()
+    {
+        if (difficulty == 2)
+        {
+            return 50;
         }
         else
         {
-            if (difficulty == 1)
-            {
-                return 20;//medium
-            }
-            else
-            {
-                return 25;//hard
-            }
+            return 20;
         }
     }
 

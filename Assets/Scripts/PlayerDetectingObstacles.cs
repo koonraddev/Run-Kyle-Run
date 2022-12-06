@@ -7,6 +7,8 @@ public class PlayerDetectingObstacles : MonoBehaviour
     public GameObject playerObject;
     private PlayerHealth playerHP;
 
+    public GameSettings gameSets;
+
     public float zpow;
     private PlayerMovement playerMov;
     private void Start()
@@ -17,6 +19,7 @@ public class PlayerDetectingObstacles : MonoBehaviour
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
+        var damage = gameSets.GetDamge();
         // 1 0 0 prawo X
         // -1 0 0 lewo X
 
@@ -41,12 +44,12 @@ public class PlayerDetectingObstacles : MonoBehaviour
         if (vecX > 0.9)
         {
             playerMov.MoveLeft();
-            playerHP.TakeDamage(20);
+            playerHP.TakeDamage(damage);
         }
         if (vecX < -0.9)
         {
             playerMov.MoveRight();
-            playerHP.TakeDamage(20);
+            playerHP.TakeDamage(damage);
         }
 
         if (hit.collider.CompareTag("Obstacle"))
@@ -54,7 +57,7 @@ public class PlayerDetectingObstacles : MonoBehaviour
             if(hit.moveDirection.z > 0.9)
             {
                 Destroy(hit.collider.gameObject);
-                playerHP.TakeDamage(20);
+                playerHP.TakeDamage(damage);
             }
         }
         

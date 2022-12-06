@@ -9,13 +9,17 @@ public class PlayerAnim : MonoBehaviour
 
 
     public PlayerMovement movPlayer;
+    public GameSettings gameSets;
 
 
     void Start()
     {
-
         animator = playerObject.GetComponent<Animator>();
-        animator.speed = 1f;
+        if (PlayerPrefs.GetInt("playerDead") == 0)
+        {
+            animator.speed = gameSets.GetAnimBaseSpeed();
+        }
+
     }
 
     // Update is called once per frame
@@ -25,6 +29,15 @@ public class PlayerAnim : MonoBehaviour
         {
             if (PlayerPrefs.GetInt("runON") == 1)
             {
+                if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    animator.speed = gameSets.GetAnimRunSpeed();
+                }
+                else
+                {
+                    animator.speed = gameSets.GetAnimBaseSpeed();
+                }
+
                 animator.SetBool("startRunON", true);
 
                 if (movPlayer.ctr.isGrounded)
@@ -50,12 +63,17 @@ public class PlayerAnim : MonoBehaviour
 
 
             }
+            else
+            {
+                animator.speed = 1f;
+            }
 
 
 
         }
         else
         {
+            animator.speed = 1f;
             animator.SetBool("pullON", true);
         }      
     }
