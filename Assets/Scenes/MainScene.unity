@@ -32363,6 +32363,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9084166579368905560, guid: d91ab517a9890f548bbd54d30a0cc008, type: 3}
+      propertyPath: gameSets
+      value: 
+      objectReference: {fileID: 456409332}
     - target: {fileID: 9108762266513940181, guid: d91ab517a9890f548bbd54d30a0cc008, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.99982303

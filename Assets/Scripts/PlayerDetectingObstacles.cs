@@ -35,7 +35,9 @@ public class PlayerDetectingObstacles : MonoBehaviour
 
         //Debug.Log(vecX + " ###### " + vecY + " ###### " + vecZ);
         //Debug.Log(vecX);
-        //Debug.Log(vecZ);
+        Debug.Log(" X " + vecX);
+        Debug.Log(" Y " + vecY);
+        Debug.Log(" Z " + vecZ);
         if (hit.moveDirection.z != 0)
         {
             zpow = hit.moveDirection.z;
@@ -54,7 +56,7 @@ public class PlayerDetectingObstacles : MonoBehaviour
 
         if (hit.collider.CompareTag("Obstacle"))
         {
-            if(hit.moveDirection.z > 0.9)
+            if(hit.moveDirection.z > 0.7)
             {
                 Destroy(hit.collider.gameObject);
                 playerHP.TakeDamage(damage);
@@ -65,7 +67,7 @@ public class PlayerDetectingObstacles : MonoBehaviour
         {
             //Debug.Log("DIR: " + hit.moveDirection.z);
             //Debug.Log("Length " + hit.moveLength);
-            if (hit.moveDirection.z > 0.9)
+            if (hit.moveDirection.z > 0.7)
             {
                 playerHP.dead = true;
                 Debug.Log("------==============DEAD==================------");
