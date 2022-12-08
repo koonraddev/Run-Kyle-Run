@@ -16,11 +16,12 @@ public class GameSettings : MonoBehaviour
     private int resHeight;
 
     private int dayTime;
-    private
 
 
     void Start()
     {
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 60;
         difficulty = PlayerPrefs.GetInt("difficulty");
         hintsON = PlayerPrefs.GetInt("hintsON");
         fullscreenON = PlayerPrefs.GetInt("fullscreen");

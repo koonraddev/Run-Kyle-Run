@@ -72,6 +72,25 @@ public class GameOverScene : MonoBehaviour
         }
     }
 
+    public void CheckSetScores()
+    {
+        int lastScore = PlayerPrefs.GetInt("distanceTraveled");
+        int highScore = PlayerPrefs.GetInt("highscore");
+        int totalScore = PlayerPrefs.GetInt("totalscore");
+
+        if (lastScore != 0)
+        {
+            if (lastScore > highScore)
+            {
+                PlayerPrefs.SetInt("highscore", lastScore);
+                PlayerPrefs.SetInt("highscoreObject", PlayerPrefs.GetInt("numberObject"));
+            }
+            totalScore += lastScore;
+        }
+
+        PlayerPrefs.SetInt("totalscore", totalScore);
+    }
+
     public void MainMenuButton()
     {
         FadeInBlackScreen();
@@ -105,6 +124,7 @@ public class GameOverScene : MonoBehaviour
 
     public void FadeInBlackScreen() //pojawianie
     {
+        CheckSetScores();
         blackScreenObject.SetActive(true);
         blackImage.DOColor(blackOpaque, fadingTime);
     }

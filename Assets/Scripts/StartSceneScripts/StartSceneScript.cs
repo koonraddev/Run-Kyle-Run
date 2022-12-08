@@ -21,6 +21,8 @@ public class StartSceneScript : MonoBehaviour
 
     void Start()
     {
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 60;
         blackImage = blackScreenObject.GetComponent<Image>();
         logoImage = logoObject.GetComponent<Image>();
         blackTransparent.a = 0f;
@@ -129,10 +131,22 @@ public class StartSceneScript : MonoBehaviour
             PlayerPrefs.SetInt("distanceTravelde", 0);
         }
 
+        //High Score Object
+        if (!PlayerPrefs.HasKey("highscoreObject"))
+        {
+            PlayerPrefs.SetInt("highscoreObject", 0);
+        }
+
         //HighScore
         if (!PlayerPrefs.HasKey("highscore"))
         {
             PlayerPrefs.SetInt("highscore", 0);
+        }
+        
+        //HighScore
+        if (!PlayerPrefs.HasKey("totalscore"))
+        {
+            PlayerPrefs.SetInt("totalscore", 0);
         }
 
         //Current Biome

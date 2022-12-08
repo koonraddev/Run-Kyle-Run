@@ -31,8 +31,11 @@ public class GameController : MonoBehaviour
     private Color blackOpaque = Color.black;
     public float fadingTime;
     private bool gameON;
+
+    public Resolution elo;
+
     void Start()
-    {
+    { 
         gameOver = false;
         gamePaused = false;
         playerMov = playerObject.GetComponent<PlayerMovement>();

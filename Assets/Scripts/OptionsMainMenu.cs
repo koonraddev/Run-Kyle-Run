@@ -6,9 +6,6 @@ using UnityEngine.UI;
 
 public class OptionsMainMenu : MonoBehaviour
 {
-
-
-
     public GameObject gameController;
     private GameSettings gameSets;
 
@@ -39,6 +36,22 @@ public class OptionsMainMenu : MonoBehaviour
     public GameObject uiManagerObject;
     private UIManager managerUI;
 
+    public GameObject lastScore;
+    private TMP_Text lastText;
+    
+    public GameObject highScore;
+    private TMP_Text highText;
+    
+    public GameObject totalScore;
+    private TMP_Text totalText;
+
+    public GameObject objectNumber;
+    private TMP_Text objectText;
+
+
+
+
+
     void Start()
     {
         gameSets = gameController.GetComponent<GameSettings>();
@@ -52,6 +65,12 @@ public class OptionsMainMenu : MonoBehaviour
         sunScript = sun.GetComponent<DayTimeScript>();
         managerUI = uiManagerObject.GetComponent<UIManager>();
 
+        lastText = lastScore.GetComponent<TMP_Text>();
+        highText = highScore.GetComponent<TMP_Text>();
+        totalText = totalScore.GetComponent<TMP_Text>();
+        objectText = objectNumber.GetComponent<TMP_Text>();
+
+
         GetHints();
         GetFullscreen();
         GetDifficulty();
@@ -59,6 +78,10 @@ public class OptionsMainMenu : MonoBehaviour
         GetMusic();
         GetSound();
         GetDayTime();
+        SetScores();
+
+
+
     }
 
     public void OnApplyButtonClick()
@@ -152,6 +175,7 @@ public class OptionsMainMenu : MonoBehaviour
 
     public void GetGameResolution()
     {
+        /*
         int actualResHeightValue;
 
         actualResHeightValue = PlayerPrefs.GetInt("resolutionHeight");
@@ -164,30 +188,53 @@ public class OptionsMainMenu : MonoBehaviour
             {1440, 3 }
         };
         ressDropDown.value = resHeightIndex[actualResHeightValue];
+        */
+        Resolution[] res = Screen.resolutions;
+        for (int i = 0; i < res.Length; i++)
+        {
+            Resolution rez = res[i];
+            ressDropDown.options.Add(new TMP_Dropdown.OptionData() { text = rez.width.ToString() + "x" + rez.height.ToString() });
+            if (Screen.currentResolution.height == rez.height)
+            {
+                ressDropDown.value = i;
+            }
+        }
     }
 
     public void SetGameResolution(int resIndex)
     {
-        Dictionary<int, int> resH = new Dictionary<int, int>()
+        /*
+        Dictionary<int, int> resH = new ()
         {
             {0, 720 },
             {1, 900 },
             {2, 1080 },
-            {3, 1440 }
+            {3, 1440 },
+            {4, 2160}
         };
 
-        Dictionary<int, int> resW = new Dictionary<int, int>()
+        Dictionary<int, int> resW = new()
         {
             {0, 1280 },
             {1, 1600 },
             {2, 1920 },
-            {3, 2560 }
+            {3, 2560 },
+            {4, 3840}
         };
+
+
 
 
         PlayerPrefs.SetInt("resolutionWidht", resW[resIndex]);
         PlayerPrefs.SetInt("resolutionHeight", resH[resIndex]);
         gameSets.SetApplyResolution(resH[resIndex], resW[resIndex]);
+        */
+        Resolution[] res = Screen.resolutions;
+
+        PlayerPrefs.SetInt("resolutionWidht", res[resIndex].width);
+        PlayerPrefs.SetInt("resolutionHeight", res[resIndex].height);
+        gameSets.SetApplyResolution(res[resIndex].height, res[resIndex].width);
+
     }
 
     public void GetMusic()
@@ -233,5 +280,12 @@ public class OptionsMainMenu : MonoBehaviour
         //gameSets.SetSoundVolume(soundVolume*0.05f); <----------do zrobienia
     }
 
+    public void SetScores()
+    {
+        objectText.text = "Test Object No. " + (PlayerPrefs.GetInt("numberObject") + 1).ToString();
 
+        lastText.text = "No. " + PlayerPrefs.GetInt("numberObject").ToString() +"\n" + PlayerPrefs.GetInt("distanceTraveled").ToString() +"m";
+        highText.text = "No. " + PlayerPrefs.GetInt("highscoreObject").ToString() + "\n" + PlayerPrefs.GetInt("highscore").ToString() + "m";
+        totalText.text = PlayerPrefs.GetInt("numberObject").ToString() + " Objects\n" + PlayerPrefs.GetInt("totalscore").ToString() + "m";   
+    }
 }
