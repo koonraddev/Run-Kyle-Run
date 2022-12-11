@@ -44,8 +44,7 @@ public class GameOverScene : MonoBehaviour
         blackTransparent.a = 0f;
         Invoke(nameof(FadeOutBlackScreen), 1f);
         Invoke(nameof(MovePlayer), 1.3f);
-        mainCamera.transform.position = startCameraPos.position;
-        mainCamera.transform.rotation = startCameraPos.rotation;
+        mainCamera.transform.SetPositionAndRotation(startCameraPos.position, startCameraPos.rotation);
         PlayerPrefs.SetInt("playerDead", 1);
         PlayerPrefs.SetInt("runON", 0);
     }
@@ -138,7 +137,6 @@ public class GameOverScene : MonoBehaviour
     public void LoadMainScene()
     {
         StartCoroutine(LoadSceneAsync());
-        //loadingSlider.gameObject.SetActive(true);
     }
 
     IEnumerator LoadSceneAsync()

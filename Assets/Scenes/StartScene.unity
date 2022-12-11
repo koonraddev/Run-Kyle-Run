@@ -328,7 +328,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 450, y: -242}
+  m_AnchoredPosition: {x: 450, y: -0.33}
   m_SizeDelta: {x: 900, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &361631824
@@ -351,34 +351,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ':
-
-    :
-
-    :
-
-    :
-
-    :
-
-    :
-
-    :
-
-    :
-
-    :
-
-    :
-
-    :
-
-
-    Warmp
-    up is over. '
+  m_text: Warmp up is over!
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0b39a3a1d52408444a2a7d46192bce5b, type: 2}
+  m_sharedMaterial: {fileID: 7587767598982895837, guid: 0b39a3a1d52408444a2a7d46192bce5b, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2129,8 +2105,8 @@ MonoBehaviour:
     I hope will help me get a job... \n\r\nJust run for your life. What are you waiting
     for? "
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0b39a3a1d52408444a2a7d46192bce5b, type: 2}
+  m_sharedMaterial: {fileID: 7587767598982895837, guid: 0b39a3a1d52408444a2a7d46192bce5b, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

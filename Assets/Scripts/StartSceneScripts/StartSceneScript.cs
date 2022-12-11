@@ -22,7 +22,6 @@ public class StartSceneScript : MonoBehaviour
     void Start()
     {
         QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 60;
         blackImage = blackScreenObject.GetComponent<Image>();
         logoImage = logoObject.GetComponent<Image>();
         blackTransparent.a = 0f;
@@ -42,8 +41,7 @@ public class StartSceneScript : MonoBehaviour
     public void FadeOutBlackScreen() //zanikanie
     {
         blackImage.DOColor(blackTransparent, fadingTime);
-        robot.SetActive(true);
-        
+        robot.SetActive(true);      
     }
 
     public void FadeOutLogoScreen()
@@ -54,7 +52,7 @@ public class StartSceneScript : MonoBehaviour
     public void FadeInBlackScreen() //pojawianie
     {
         blackImage.DOColor(blackOpaque, fadingTime);
-        Invoke("LoadMainScene",fadingTime);
+        Invoke(nameof(LoadMainScene), fadingTime);
 
     }
 
@@ -81,7 +79,7 @@ public class StartSceneScript : MonoBehaviour
         //Day Time
         if (!PlayerPrefs.HasKey("dayTime"))
         {
-            PlayerPrefs.SetInt("dayTime", 2);
+            PlayerPrefs.SetInt("dayTime", 0);
         }
         //Day Time Sun Position (Animation Time)
         if (!PlayerPrefs.HasKey("sunAnimTime"))
@@ -178,6 +176,5 @@ public class StartSceneScript : MonoBehaviour
         {
             PlayerPrefs.SetInt("playAgain", 0);
         }
-
     }
 }
