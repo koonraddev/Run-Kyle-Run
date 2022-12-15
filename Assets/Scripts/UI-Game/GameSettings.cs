@@ -54,10 +54,10 @@ public class GameSettings : MonoBehaviour
     {
         return difficulty switch
         {
-            0 => 20,
-            1 => 30,
-            2 => 35,
-            _ => 25,
+            0 => 25,
+            1 => 35,
+            2 => 40,
+            _ => 30,
         };
     }
 

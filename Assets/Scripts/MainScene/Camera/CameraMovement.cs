@@ -24,8 +24,10 @@ public class CameraMovement : MonoBehaviour
     public float baseFrequency;
 
     [Header("FOV Settings")]
-    public float Shifting;
-    public float NOShifting;
+    public float ShiftingBackCamFov;
+    public float NOShiftingBackCamFov;
+
+    private float shiftingBackCamRatio;
     [Space(10)]
     public float ShiftingFrontCam;
     public float NOShiftingFrontCam;
@@ -40,8 +42,16 @@ public class CameraMovement : MonoBehaviour
     public float activeLaneMultiplier;
 
     public int cameraMode; //0 = standard/top run  |  1 = bottom run
+
+    private float addCameraFov;
+    private float step;
+    private float angle;
+    private float scale;
+    private float x;
+    private float y;
     void Start()
     {
+        shiftingBackCamRatio = ShiftingBackCamFov / NOShiftingBackCamFov;
         backCamera = true;
         runON = false;
         offsetX = 0;
@@ -64,44 +74,23 @@ public class CameraMovement : MonoBehaviour
             FrontCameraPosition.y += offsetY;
             BackCameraPosition.y += offsetY;
         }
-        var step = speed * Time.deltaTime;
+        step = speed * Time.deltaTime;
         if (runON)
         {
-            float angle = Mathf.PI;
-            float scale = 2 / (3 - Mathf.Cos(2 * (angle + Time.time * frequency)));
-            float x = scale * Mathf.Cos(angle + Time.time * frequency) * lineScaleX;
-            float y = scale * Mathf.Sin(2 * (angle + Time.time * frequency)) / 2 * lineScaleY;
+            angle = Mathf.PI;
+            scale = 2 / (3 - Mathf.Cos(2 * (angle + Time.time * frequency)));
+            x = scale * Mathf.Cos(angle + Time.time * frequency) * lineScaleX;
+            y = scale * Mathf.Sin(2 * (angle + Time.time * frequency)) / 2 * lineScaleY;
             if (backCamera)
             {
                 if (Input.GetKey(KeyCode.LeftShift))
                 {
-                    frequency = runFrequency;
-                    if (playerMov.ctr.isGrounded)
-                    {
-                        mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, new Vector3(BackCameraPosition.x + x, BackCameraPosition.y + y, BackCameraPosition.z), step * multiplier);
-                    }
-                    else
-                    {
-                        mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, BackCameraPosition, step * multiplier);
-                    }
-                    mainCamera.transform.rotation = Quaternion.Slerp(mainCamera.transform.rotation, BackCameraPlace.rotation, step);
-                    mainCamera.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, Shifting, speed * Time.deltaTime);
+                    CameraShifting();                   
                 }
                 else
                 {
-                    frequency = baseFrequency;
-                    if(playerMov.ctr.isGrounded)
-                    {
-                        mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, new Vector3(BackCameraPosition.x + x, BackCameraPosition.y + y, BackCameraPosition.z), step * multiplier);
-                    }
-                    else
-                    {
-                        mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, BackCameraPosition, step * multiplier);
-                    }
-                    mainCamera.transform.rotation = Quaternion.Slerp(mainCamera.transform.rotation, BackCameraPlace.rotation, step);
-                    mainCamera.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, NOShifting, speed * Time.deltaTime);
+                    CameraNoShifting();                   
                 }
-
             }
             else
             {
@@ -116,7 +105,7 @@ public class CameraMovement : MonoBehaviour
                 {
                     mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, FrontCameraPosition, step * multiplier);
                     mainCamera.transform.rotation = Quaternion.Slerp(mainCamera.transform.rotation, FrontCameraPlace.localRotation, step);
-                    mainCamera.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, NOShifting, speed * Time.deltaTime);
+                    mainCamera.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, NOShiftingBackCamFov, speed * Time.deltaTime);//
                 }
             }
             /*
@@ -128,6 +117,49 @@ public class CameraMovement : MonoBehaviour
             */
         } 
 
+    }
+
+    public void CameraShifting()
+    {
+        frequency = runFrequency;
+        if (playerMov.ctr.isGrounded)
+        {
+            mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, new Vector3(BackCameraPosition.x + x, BackCameraPosition.y + y, BackCameraPosition.z), step * multiplier);
+        }
+        else
+        {
+            mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, BackCameraPosition, step * multiplier);
+        }
+        mainCamera.transform.rotation = Quaternion.Slerp(mainCamera.transform.rotation, BackCameraPlace.rotation, step);
+        //mainCamera.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, ShiftingFov, speed * Time.deltaTime);
+
+        if (mainCamera.fieldOfView < ShiftingBackCamFov)
+        {
+            addCameraFov += Time.deltaTime; // * shiftingBackCamRatio;
+            mainCamera.fieldOfView += addCameraFov;
+        }
+        else
+        {
+            mainCamera.fieldOfView = ShiftingBackCamFov;
+            addCameraFov = 0;
+        }
+
+
+    }
+
+    private void CameraNoShifting()
+    {
+        frequency = baseFrequency;
+        if (playerMov.ctr.isGrounded)
+        {
+            mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, new Vector3(BackCameraPosition.x + x, BackCameraPosition.y + y, BackCameraPosition.z), step * multiplier);
+        }
+        else
+        {
+            mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, BackCameraPosition, step * multiplier);
+        }
+        mainCamera.transform.rotation = Quaternion.Slerp(mainCamera.transform.rotation, BackCameraPlace.rotation, step);
+        mainCamera.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, NOShiftingBackCamFov, speed * Time.deltaTime);
     }
 
     public void RunChangeStatus()

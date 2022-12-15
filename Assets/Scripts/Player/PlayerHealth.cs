@@ -8,8 +8,10 @@ public class PlayerHealth : MonoBehaviour
     public int currentHealth;
 
     public bool dead;
+    public bool takeDamage;
     void Start()
     {
+        takeDamage = true;
         currentHealth = maxHealth;
         dead = false;
     }
@@ -24,7 +26,11 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        currentHealth -= damage;
+        if (takeDamage)
+        {
+            currentHealth -= damage;
+        }
+
     }
 
     public void HealthUP (int heal)

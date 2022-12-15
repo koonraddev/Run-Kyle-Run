@@ -12,17 +12,17 @@ public class PlayTrigger : MonoBehaviour
     private CameraStartMenu camCtr;
 
     public GameObject leftRenderingTrigger;
-    private RenderingTriggerStartScript leftRTSS;
+    private TriggerScript leftTrigger;
 
     public GameObject rightRenderingTrigger;
-    private RenderingTriggerStartScript rightRTSS;
+    private TriggerScript rightTrigger;
 
     public GameObject mainRenderingTrigger;
-    private RenderingTriggerStartScript mainRTSS;
-
+    private TriggerScript mainTrigger;
 
     public GameObject startDoorsTriggerObj;
     private StartDoorsTrigger startDTrigger;
+
 
     public GameObject playTextObject;
     private TMP_Text playText;
@@ -42,9 +42,9 @@ public class PlayTrigger : MonoBehaviour
         animator = playerObject.GetComponent<Animator>();
         camCtr = cam.GetComponent<CameraStartMenu>();
 
-        leftRTSS = leftRenderingTrigger.GetComponent<RenderingTriggerStartScript>();
-        rightRTSS = rightRenderingTrigger.GetComponent<RenderingTriggerStartScript>();
-        mainRTSS = mainRenderingTrigger.GetComponent<RenderingTriggerStartScript>();
+        leftTrigger = leftRenderingTrigger.GetComponent<TriggerScript>();
+        rightTrigger = rightRenderingTrigger.GetComponent<TriggerScript>();
+        mainTrigger = mainRenderingTrigger.GetComponent<TriggerScript>();
 
         playText = playTextObject.GetComponent<TMP_Text>();
         playText.color = basicColor;
@@ -76,10 +76,10 @@ public class PlayTrigger : MonoBehaviour
     {
         PlayerPrefs.SetInt("runON", 1);
         camCtr.PlayCameraPlace();
-        leftRTSS.ChangeTriggerPosition();
-        rightRTSS.ChangeTriggerPosition();
-        mainRTSS.ChangeTriggerPosition();
-        Ground_Script[] groundObjects = FindObjectsOfType<Ground_Script>();
+        leftTrigger.SetRunStatus(true);
+        mainTrigger.SetRunStatus(true);
+        rightTrigger.SetRunStatus(true);
+        //Ground_Script[] groundObjects = FindObjectsOfType<Ground_Script>();
         lightMustBeON = true;
         int difficulty = PlayerPrefs.GetInt("difficulty");
 
@@ -95,10 +95,10 @@ public class PlayTrigger : MonoBehaviour
                 animator.speed = 2f;
                 break;
         }
-        foreach (Ground_Script obj in groundObjects)
-        {
-            obj.MoveObject();
-        }
+        //foreach (Ground_Script obj in groundObjects)
+        //{
+        //    obj.MoveObject();
+        //}
     }
 
     private void OnMouseEnter()

@@ -13,8 +13,21 @@ public class TriggerScript : MonoBehaviour
 
     public int biome;
 
+    private GameSettings gameSets;
+
+    private float speed;
+    private float baseSpeed;
+    private float runSpeed;
+
+    private float addSpeed;
+    private bool runON;
     void Start()
     {
+        SetRunStatus(false);
+        gameSets = FindObjectOfType<GameSettings>();
+
+        baseSpeed = gameSets.GetBaseSpeed();
+        runSpeed = gameSets.GetRunSpeed();
         if (biome == 1)
         {
             currentPrefabsList = industryPrefabsList;
@@ -25,6 +38,63 @@ public class TriggerScript : MonoBehaviour
         }
 
     }
+
+
+    private void Update()
+    {
+        if (runON)
+        {
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                RunSpeed();
+            }
+            else
+            {
+                BaseSpeed();
+            }
+        }
+        else
+        {
+            SetSpeedToZero();
+        }
+
+    }
+
+
+    public float GetGroundSpeed()
+    {
+        return speed;
+    }
+    public void RunSpeed()
+    {
+        if (speed < runSpeed)
+        {
+            addSpeed += Time.deltaTime / 5;
+            speed += addSpeed;
+        }
+        else
+        {
+            speed = runSpeed;
+            addSpeed = 0;
+        }
+    }
+
+    public void SetSpeedToZero()
+    {
+        speed = 0;
+    }
+
+    public void SetRunStatus(bool status)
+    {
+        runON = status;
+    }
+
+    public void BaseSpeed()
+    {
+        speed = baseSpeed;
+        addSpeed = 0;
+    }
+
     private void OnTriggerExit(Collider exitInfo)
     {
         if (biome == 1)

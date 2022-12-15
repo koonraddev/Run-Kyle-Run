@@ -47,7 +47,7 @@ public class PlayerDetectingObstacles : MonoBehaviour
         {
             if (hit.moveDirection.z > 0.3)
             {
-                playerHP.dead = true;
+                playerHP.TakeDamage(9999);
             }
         }  
     }
