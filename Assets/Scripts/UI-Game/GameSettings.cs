@@ -31,15 +31,8 @@ public class GameSettings : MonoBehaviour
         dayTime = PlayerPrefs.GetInt("dayTime");
     }
 
-    public void SetDifficulty(int difficultyValue)
-    {
-        difficulty = difficultyValue;
-    }
-
-    public int GetDifficulty()
-    {
-        return difficulty;
-    }
+    public void SetDifficulty(int difficultyValue) { difficulty = difficultyValue; }
+    public int GetDifficulty() { return difficulty; }
     public int GetBaseSpeed()
     {
         return difficulty switch
@@ -84,30 +77,15 @@ public class GameSettings : MonoBehaviour
 
     public int GetDamge()
     {
-        if (difficulty == 2)
-        {
-            return 50;
-        }
-        else
-        {
-            return 20;
-        }
+        return difficulty == 2 ? 50 : 20;
     }
 
-    public void SetHints(int hintsINT)
-    {
-        hintsON = hintsINT;
-    }
+    public void SetHints(int hintsINT) { hintsON = hintsINT; }
 
-    public int GetHints()
-    {
-        return hintsON;
-    }
+    public int GetHints() { return hintsON; }
 
-    public void SetFullscreen(int fullON)
-    {
-        fullscreenON = fullON;
-    }
+    public void SetFullscreen(int fullON) { fullscreenON = fullON; }
+
     public void SetApplyResolution(int resH, int resW, int fps)
     {
         //resHeight = resH;
@@ -124,12 +102,7 @@ public class GameSettings : MonoBehaviour
         }
     }
     
-    public void SetDayTime(int dayTimeValue)
-    {
-        dayTime = dayTimeValue;
-    }
-    public int GetDayTime()
-    {
-        return dayTime;
-    }
+    public void SetDayTime(int dayTimeValue) { dayTime = dayTimeValue; }
+
+    public int GetDayTime() { return dayTime; }
 }

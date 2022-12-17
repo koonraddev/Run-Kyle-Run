@@ -34,8 +34,16 @@ public class GameController : MonoBehaviour
 
     public Resolution elo;
 
+    public int powerRunConsume;
+    public int powerCharge;
+
+    private int power;
+    private float powerDownCounter;
+    private float powerUpCounter;
+    private bool isPower;
     void Start()
-    { 
+    {
+        power = 100;
         gameOver = false;
         gamePaused = false;
         playerMov = playerObject.GetComponent<PlayerMovement>();
@@ -44,21 +52,61 @@ public class GameController : MonoBehaviour
         blackImage = blackScreenObject.GetComponent<Image>();
         PlayerPrefs.SetInt("playerDead", 0);
         anim = sun.GetComponent<Animation>();
+        powerDownCounter = 0;
+        powerUpCounter = 0;
     }
 
     void Update()
     {
         gameON = playerMov.runON;
-        if (playerHP.dead == true)
+        if (Input.GetKey(KeyCode.LeftShift))
         {
-            gameOver = true;
+            if (power>= powerRunConsume)
+            {
+                isPower = true;
+                PowerDown(powerRunConsume);
+            }
+            else
+            {
+                isPower = false;
+            }
+        }
+        else
+        {
+            PowerUP(powerCharge);
         }
 
-        if (gameOver)
+        if (playerHP.dead == true)
         {
             GameOver();
         }
     }
+
+
+
+    private void PowerUP(int powerAdd)
+    {
+        powerUpCounter += Time.deltaTime;
+        if (powerUpCounter >= 1)
+        {
+            power += powerAdd;
+            powerUpCounter = 0;
+        }
+    }
+
+    private void PowerDown(int powerConsume)
+    {
+        powerDownCounter += Time.deltaTime;
+        if (powerDownCounter >= 1)
+        {
+            power -= powerConsume;
+            powerDownCounter = 0;
+        }
+
+    }
+    public int GetPowerValue() { return power; }
+
+    public bool GetPowerStatus() { return isPower; }
 
     public void StopMovingObjects()
     {

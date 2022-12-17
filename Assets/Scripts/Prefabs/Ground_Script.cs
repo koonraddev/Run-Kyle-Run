@@ -19,18 +19,9 @@ public class Ground_Script : MonoBehaviour
         transform.position += new Vector3(0f, 0f, -1f) * Time.deltaTime * speed;
     }
 
-    public void DestroyObject()
-    {
-        Destroy(gameObject);
-    }
+    public void DestroyObject() { Destroy(gameObject); }
 
-    public void FreezeObject()
-    {
-        speed = 0;
-    }
-    public void MoveObject()
-    {
-        speed = gameTrigger.GetGroundSpeed();
-    }
+    public void FreezeObject() { speed = 0; }
 
+    public void MoveObject() { speed = gameTrigger.GetGroundSpeed(); }
 }

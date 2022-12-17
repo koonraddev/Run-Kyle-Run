@@ -5,7 +5,6 @@ using UnityEngine;
 public class SingleLight : MonoBehaviour
 {
     private bool lightsON;
-    private int dayTime;
     private GameObject lightObject;
     void Start()
     {
@@ -14,7 +13,7 @@ public class SingleLight : MonoBehaviour
 
     void Update()
     {
-        dayTime = PlayerPrefs.GetInt("dayTime");
+        var dayTime = PlayerPrefs.GetInt("dayTime");
         if (dayTime == 2 || dayTime == 3)
         {
             lightsON = true;
@@ -23,14 +22,6 @@ public class SingleLight : MonoBehaviour
         {
             lightsON = false;
         }
-
-        if (lightsON)
-        {
-            lightObject.SetActive(true);
-        }
-        else
-        {
-            lightObject.SetActive(false);
-        }
+        lightObject.SetActive(lightsON);
     }
 }

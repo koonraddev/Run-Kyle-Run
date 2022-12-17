@@ -49,26 +49,14 @@ public class PlayerMovement : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.RightArrow))
             {
                 camMov.MultiplierActiveLane();
-                if (backCamera)
-                {
-                    activeLane += 1;
-                }
-                else
-                {
-                    activeLane -= 1;
-                }
+                if (backCamera) { MoveRight(); }
+                else { MoveLeft(); }
             }
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
                 camMov.MultiplierActiveLane();
-                if (backCamera)
-                {
-                    activeLane -= 1;
-                }
-                else
-                {
-                    activeLane += 1;
-                }
+                if (backCamera) { MoveLeft(); }
+                else { MoveRight(); }
             }
             activeLane = Mathf.Clamp(activeLane, 0, 4);
         }
@@ -77,19 +65,14 @@ public class PlayerMovement : MonoBehaviour
         {
             movementSpeed = movementSpeedOnGround;
             verticalVelocity = -0.1f;
-            if (Input.GetKeyDown(KeyCode.UpArrow) && runON)
-            {
-                verticalVelocity = jumpForce;
-            }
+            if (Input.GetKeyDown(KeyCode.UpArrow) && runON) verticalVelocity = jumpForce;
         }
         else
         {
             movementSpeed = movementSpeedInAir;
             verticalVelocity -= (gravity * Time.deltaTime);
-            if (Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                verticalVelocity = -jumpForce;
-            }
+
+            if (Input.GetKeyDown(KeyCode.DownArrow)) verticalVelocity = -jumpForce;
         }       
         newPosition.x = lanes[activeLane].transform.position.x;
         newPosition.z = lanes[activeLane].transform.position.z;
@@ -97,49 +80,19 @@ public class PlayerMovement : MonoBehaviour
         Vector3 moveVector = Vector3.zero;
         moveVector.x = (newPosition - transform.position).normalized.x * movementSpeed;
         moveVector.y = verticalVelocity;
-        
-        if (transform.position.z != lanes[activeLane].transform.position.z)
-        {
-            moveVector.z = (newPosition - transform.position).normalized.z * movementSpeed;
-        }
-        else
-        {
-            moveVector.z = 0f;
-        }
+
+        moveVector.z = transform.position.z != lanes[activeLane].transform.position.z ? (newPosition - transform.position).normalized.z * movementSpeed : 0f;
 
         ctr.Move(moveVector * Time.deltaTime);     
     }
-    public int GetActiveLane()
-    {
-        return activeLane;
-    }
+    public int GetActiveLane() { return activeLane; }
 
-    public Vector3 GetActiveLanePosition()
-    {
-        return lanes[activeLane].transform.position;
-    }
+    public Vector3 GetActiveLanePosition() { return lanes[activeLane].transform.position; }
 
-    public float GetMovementSpeed()
-    {
-        return movementSpeed;
-    }
-    public void RunChangeStatus()
-    {
-        runON = !runON;
-    }
-    public void MoveLeft()
-    {
-        if (runON)
-        {
-            activeLane -= 1;
-        }
-    }
+    public float GetMovementSpeed() { return movementSpeed; }
+    public void RunChangeStatus() { runON = !runON; }
 
-    public void MoveRight()
-    {
-        if (runON)
-        {
-            activeLane += 1;
-        }
-    }
+    public void MoveLeft() { if (runON) activeLane -= 1; }
+
+    public void MoveRight() { if (runON) activeLane += 1; }
 }

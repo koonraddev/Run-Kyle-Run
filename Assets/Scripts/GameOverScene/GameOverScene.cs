@@ -8,18 +8,17 @@ using TMPro;
 
 public class GameOverScene : MonoBehaviour
 {
-    public GameObject doorsTrigger;
-
     public GameObject mainCamera;
     public Transform startCameraPos;
     public Transform endCameraPos;
+
+    public GameObject doorsTrigger;
 
     public GameObject leftDoor;
     public GameObject rightDoor;
 
     public Transform leftDoorPosClose;
     public Transform rightDoorPosClose;
-
 
     public GameObject blackScreenObject;
     public GameObject playerObject;
@@ -37,7 +36,6 @@ public class GameOverScene : MonoBehaviour
 
     public GameObject statusMenu;
 
-    
     void Start()
     {
         blackImage = blackScreenObject.GetComponent<Image>();
@@ -61,14 +59,10 @@ public class GameOverScene : MonoBehaviour
 
         if (leftDoor.transform.rotation.eulerAngles.y < 95f)
         {
-            mainCamera.transform.SetPositionAndRotation(Vector3.MoveTowards(mainCamera.transform.position, endCameraPos.position,step), Quaternion.Slerp(mainCamera.transform.rotation, endCameraPos.rotation, step / 2));
-
+            mainCamera.transform.SetPositionAndRotation(Vector3.MoveTowards(mainCamera.transform.position, endCameraPos.position, step), Quaternion.Slerp(mainCamera.transform.rotation, endCameraPos.rotation, step / 2));
         }
 
-        if (mainCamera.transform.position == endCameraPos.position)
-        {
-            ActiveStatusMenu();
-        }
+        if (mainCamera.transform.position == endCameraPos.position) { ActiveStatusMenu(); }
     }
 
     public void CheckSetScores()
@@ -109,8 +103,6 @@ public class GameOverScene : MonoBehaviour
         blackScreenObject.SetActive(true);
         blackImage.DOColor(blackTransparent, fadingTime);
         Invoke(nameof(BlackScreenChangeStatus), fadingTime);
-
-
     }
 
     public void ActiveStatusMenu()
@@ -131,13 +123,9 @@ public class GameOverScene : MonoBehaviour
     public void BlackScreenChangeStatus()
     {
         blackScreenObject.SetActive(!blackScreenObject.activeSelf);
-
     }
 
-    public void LoadMainScene()
-    {
-        StartCoroutine(LoadSceneAsync());
-    }
+    public void LoadMainScene() { StartCoroutine(LoadSceneAsync()); }
 
     IEnumerator LoadSceneAsync()
     {
@@ -154,9 +142,6 @@ public class GameOverScene : MonoBehaviour
         }
     }
 
-    public void MovePlayer()
-    {
-        playerObject.GetComponent<Rigidbody>().AddForce(new Vector3(0f, 200, 1000));
-    }
+    public void MovePlayer() { playerObject.GetComponent<Rigidbody>().AddForce(new Vector3(0f, 200, 1000)); }
 
 }

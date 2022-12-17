@@ -30,7 +30,6 @@ public class PlayTrigger : MonoBehaviour
     public GameObject lightPlay;
     public bool lightMustBeON;
     private bool lightsON;
-    private int dayTime;
 
     [Header("Colors")]
     public Color basicColor;
@@ -54,13 +53,11 @@ public class PlayTrigger : MonoBehaviour
         Invoke(nameof(PlayAgainCheck), 1f);
     }
 
-    private void Update()
+    void Update()
     {
-        dayTime = PlayerPrefs.GetInt("dayTime");
-        if ((dayTime == 3 || dayTime == 4) && PlayerPrefs.GetInt("lightsON")== 1)
-        {
-            lightsON = true;
-        }
+        var dayTime = PlayerPrefs.GetInt("dayTime");
+        var lights = PlayerPrefs.GetInt("lightsON");
+        if ((dayTime == 3 || dayTime == 4) && lights == 1) { lightsON = true; }         
     }
 
     public void PlayAgainCheck()
@@ -105,19 +102,13 @@ public class PlayTrigger : MonoBehaviour
     {
         playText.DOColor(mouseOnColor, changeDuration);
         startDTrigger.ChangeDoorsStatus();
-        if (lightsON)
-        {
-            lightPlay.SetActive(true);
-        }
+        if (lightsON) lightPlay.SetActive(true);
     }
 
     private void OnMouseExit()
     {
         playText.DOColor(basicColor, changeDuration);
         startDTrigger.ChangeDoorsStatus();
-        if (!lightMustBeON)
-        {
-            lightPlay.SetActive(false);
-        }
+        if (!lightMustBeON) lightPlay.SetActive(false);
     }
 }

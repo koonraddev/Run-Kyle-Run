@@ -38,5 +38,4 @@ public class DistanceTrigger : MonoBehaviour
             distanceScaled = metersHolder + (distINT) / 2;
         }
     }
-
 }

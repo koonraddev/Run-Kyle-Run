@@ -58,47 +58,27 @@ public class CameraStartMenu : MonoBehaviour
 
                 if (activeCamera == 0)
                 {
-                    if (mainCamera.transform.position == menuCameraPlaces[0].position)
-                    {
-                        cameraIdle = true;
-                    }
+                    if (mainCamera.transform.position == menuCameraPlaces[0].position) { cameraIdle = true; }
                 }
                 else
                 {
                     cameraIdle = false;
                 }
 
-                if (cameraIdle)
-                {
-                    mainCamera.transform.position = new Vector3(menuCameraPlaces[activeCamera].position.x + xMenu, menuCameraPlaces[activeCamera].position.y + yMenu, menuCameraPlaces[activeCamera].position.z);
-                }
+                if (cameraIdle) { mainCamera.transform.position = new Vector3(menuCameraPlaces[activeCamera].position.x + xMenu, menuCameraPlaces[activeCamera].position.y + yMenu, menuCameraPlaces[activeCamera].position.z); }
+
                 mainCamera.transform.SetPositionAndRotation(Vector3.MoveTowards(mainCamera.transform.position, menuCameraPlaces[activeCamera].position, step * 10), Quaternion.Slerp(mainCamera.transform.rotation, menuCameraPlaces[activeCamera].localRotation, step * 2));
             }
         }
     }
 
-    public void MainCameraPlace()
-    {
-        activeCamera = 0;
-    }
+    public void MainCameraPlace() { activeCamera = 0; }
 
-    public void PlayCameraPlace()
-    {
-        activeCamera = 1;
-    }
+    public void PlayCameraPlace() { activeCamera = 1; }
 
-    public void OptionsCameraPlace()
-    {
-        activeCamera = 2;
-    }
+    public void OptionsCameraPlace() { activeCamera = 2; }
 
-    public void QuitCameraPlace()
-    {
-        activeCamera = 3;
-    }
+    public void QuitCameraPlace() { activeCamera = 3; }
 
-    public void RunChangeStatus()
-    {
-        runOFF = !runOFF;
-    }
+    public void RunChangeStatus() { runOFF = !runOFF; }
 }

@@ -38,14 +38,8 @@ public class StartDoorsTrigger : MonoBehaviour
     private void OnTriggerStay(Collider enterInfo)
     {
         PlayerMovement player = enterInfo.GetComponent<PlayerMovement>();
-        if (player != null)
-        {
-            openDoors = true;
-        }
+        if (player != null) { openDoors = true; }
     }
 
-    public void ChangeDoorsStatus()
-    {
-        openDoors = !openDoors;
-    }
+    public void ChangeDoorsStatus() { openDoors = !openDoors; }
 }

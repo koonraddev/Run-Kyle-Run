@@ -37,38 +37,26 @@ public class OptionsTrigger : MonoBehaviour
 
     void Update()
     {
-        dayTime = PlayerPrefs.GetInt("dayTime");
-        if ((dayTime == 3 || dayTime == 4) && PlayerPrefs.GetInt("lightsON") == 1)
-        {
-            lightsON = true;
-        }
-        if (cam.transform.position == optionsCameraPlace.position)
-        {
-            optionsMenu.SetActive(true);
-        }
-        else
-        {
-            optionsMenu.SetActive(false);
-        }
+        var dayTime = PlayerPrefs.GetInt("dayTime");
+        var lights = PlayerPrefs.GetInt("lightsON");
+        if ((dayTime == 3 || dayTime == 4) && lights == 1) { lightsON = true; }
+
+        bool setActive = cam.transform.position == optionsCameraPlace.position;
+        optionsMenu.SetActive(setActive);
     }
 
     public void OnMouseDown()
     {
         camCtr.OptionsCameraPlace();
-        if (lightsON)
-        {
-            lightOptions.SetActive(true);
-        }
+        if (lightsON) { lightOptions.SetActive(true); }
         lightMustBeON = true;
     }
 
     private void OnMouseEnter()
     {
-        if (lightsON)
-        {
-            lightOptions.SetActive(true);
-        }
         optionsText.DOColor(mouseOnColor, changeDuration);
+        if (lightsON) { lightOptions.SetActive(true); }
+        
         laptopON.SetActive(true);
         laptopOFF.SetActive(false);
     }
@@ -76,17 +64,11 @@ public class OptionsTrigger : MonoBehaviour
     private void OnMouseExit()
     {
         optionsText.DOColor(basicColor, changeDuration);
-        laptopON.SetActive(false);
-        if (!lightMustBeON)
-        {
-            lightOptions.SetActive(false);
-        }
+        if (!lightMustBeON) { lightOptions.SetActive(false); }
 
+        laptopON.SetActive(false);
         laptopOFF.SetActive(true);
     }
 
-    public void LightOff()
-    {
-        lightMustBeON = false;
-    }
+    public void LightOff() { lightMustBeON = false; }
 }

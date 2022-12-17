@@ -155,10 +155,7 @@ public class OptionsMainMenu : MonoBehaviour
             gameSets.SetFullscreen(0);
         }
     }
-    public void GetDifficulty()
-    {
-        diffDropDown.value = PlayerPrefs.GetInt("difficulty");
-    }
+    public void GetDifficulty() { diffDropDown.value = PlayerPrefs.GetInt("difficulty"); }
 
     void SetDifficulty(int diffLevel)
     {
@@ -190,23 +187,15 @@ public class OptionsMainMenu : MonoBehaviour
         ressDropDown.RefreshShownValue();
     }
 
-    public void SetGameResolution(int resIndex)
-    {
-        gameSets.SetApplyResolution(resolutions[resIndex].height, resolutions[resIndex].width, resolutions[resIndex].refreshRate);
-    }
+    public void SetGameResolution(int resIndex) { gameSets.SetApplyResolution(resolutions[resIndex].height, resolutions[resIndex].width, resolutions[resIndex].refreshRate); }
 
-    public void GetMusic()
-    {
-        musicSlider.value = PlayerPrefs.GetFloat("musicVolume");
-    }
+    public void GetMusic() { musicSlider.value = PlayerPrefs.GetFloat("musicVolume"); }
+
     public void SetMusic(float musicVolume)
     {
         PlayerPrefs.SetFloat("musicVolume", musicVolume);
     }
-    public void GetDayTime()
-    {
-        dayTimeDropDown.value = PlayerPrefs.GetInt("dayTime");
-    }
+    public void GetDayTime() { dayTimeDropDown.value = PlayerPrefs.GetInt("dayTime"); }
 
     public void SetDayTime(int dayTime)
     {

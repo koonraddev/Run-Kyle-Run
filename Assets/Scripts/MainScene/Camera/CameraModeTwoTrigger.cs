@@ -41,9 +41,6 @@ public class CameraModeTwoTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("PlayerCharacter"))
-        {
-            camMov.cameraMode = 2;
-        }
+        if (other.gameObject.CompareTag("PlayerCharacter")) { camMov.cameraMode = 2; }
     }
 }

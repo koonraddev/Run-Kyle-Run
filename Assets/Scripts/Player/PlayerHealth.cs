@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerHealth : MonoBehaviour
 {
     public int maxHealth;
-    public int currentHealth;
+    private int currentHealth;
 
     public bool dead;
     public bool takeDamage;
@@ -18,23 +18,12 @@ public class PlayerHealth : MonoBehaviour
 
     void Update()
     {
-        if (currentHealth <= 0)
-        {
-            dead = true;
-        }
+        if (currentHealth <= 0) { dead = true; }
     }
 
-    public void TakeDamage(int damage)
-    {
-        if (takeDamage)
-        {
-            currentHealth -= damage;
-        }
+    public void TakeDamage(int damage) { if (takeDamage) currentHealth -= damage; }
 
-    }
+    public void HealthUP (int heal) { currentHealth += heal; }
 
-    public void HealthUP (int heal)
-    {
-        currentHealth += heal;
-    }
+    public int GetCurrentHP() { return currentHealth; }
 }

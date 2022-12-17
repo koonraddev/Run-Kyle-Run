@@ -18,7 +18,6 @@ public class QuitTrigger : MonoBehaviour
     public GameObject lightQuit;
     public bool lightMustBeON;
     private bool lightsON;
-    private int dayTime;
 
     [Header("Colors")]
     public Color basicColor;
@@ -34,52 +33,32 @@ public class QuitTrigger : MonoBehaviour
 
     void Update()
     {
-        dayTime = PlayerPrefs.GetInt("dayTime");
-        if ((dayTime == 3 || dayTime == 4) && PlayerPrefs.GetInt("lightsON") == 1)
-        {
-            lightsON = true;
-        }
-        if (cam.transform.position == quitCameraPlace.position)
-        {
-            quitMenu.SetActive(true);
-        }
-        else
-        {
-            quitMenu.SetActive(false);
-        }
+        var dayTime = PlayerPrefs.GetInt("dayTime");
+        var lights = PlayerPrefs.GetInt("lightsON");
+        if ((dayTime == 3 || dayTime == 4) && lights == 1) { lightsON = true; }
+
+        bool setActive = cam.transform.position == quitCameraPlace.position;
+        quitMenu.SetActive(setActive);
     }
 
     public void OnMouseDown()
     {
         camCtr.QuitCameraPlace();
-        if (lightsON)
-        {
-            lightQuit.SetActive(true);
-        }
+        if (lightsON) { lightQuit.SetActive(true); }
         lightMustBeON = true;
     }
 
     private void OnMouseEnter()
     {
         quitText.DOColor(mouseOnColor, changeDuration);
-        if (lightsON)
-        {
-            lightQuit.SetActive(true);
-        }
-
+        if (lightsON) { lightQuit.SetActive(true); }
     }
 
     private void OnMouseExit()
     {
         quitText.DOColor(basicColor, changeDuration);
-        if (!lightMustBeON)
-        {
-            lightQuit.SetActive(false);
-        }
+        if (!lightMustBeON) { lightQuit.SetActive(false); }
     }
 
-    public void LightOff()
-    {
-        lightMustBeON = false;
-    }
+    public void LightOff() { lightMustBeON = false; }
 }

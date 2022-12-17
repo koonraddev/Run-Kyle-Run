@@ -25,14 +25,8 @@ public class LightSourceMainContainer : MonoBehaviour
     {
         if (myLight.intensity == 0 && changeColor == true)
         {
-            if (colorIndex == colorList.Length - 1)
-            {
-                colorIndex = 0;
-            }
-            else
-            {
-                colorIndex += 1;
-            }
+            colorIndex = colorIndex == colorList.Length - 1 ? 0 : +1;
+
             changeColor = false;
         }
         myLight.color = colorList[colorIndex];

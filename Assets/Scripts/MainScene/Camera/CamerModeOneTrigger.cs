@@ -17,16 +17,10 @@ public class CamerModeOneTrigger : MonoBehaviour
 
     void Update()
     {
-        if (camMov.cameraMode == 1 && camMov.GetRunStatus())
-        {
-            camMov.BackCameraStartPlace = new Vector3(0, 8, -33);
-        }
+        if (camMov.cameraMode == 1 && camMov.GetRunStatus()) { camMov.BackCameraStartPlace = new Vector3(0, 8, -33); }
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("PlayerCharacter"))
-        {
-            camMov.cameraMode = 1;
-        }
+        if (other.gameObject.CompareTag("PlayerCharacter")) { camMov.cameraMode = 1; }
     }
 }

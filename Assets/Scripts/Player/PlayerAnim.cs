@@ -20,9 +20,13 @@ public class PlayerAnim : MonoBehaviour
 
     void Update()
     {
-        if (PlayerPrefs.GetInt("playerDead") == 0)
+        var playerDead = PlayerPrefs.GetInt("playerDead");
+        var runON = PlayerPrefs.GetInt("runON");
+
+
+        if (playerDead == 0) //alive
         {
-            if (PlayerPrefs.GetInt("runON") == 1)
+            if (runON == 1) // run is ON
             {
                 if (Input.GetKey(KeyCode.LeftShift))
                 {

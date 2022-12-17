@@ -32,10 +32,7 @@ public class StartSceneScript : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKey(KeyCode.Space) && logoImage.color.a == 0f)
-        {
-            FadeInBlackScreen();
-        }
+        if (Input.GetKey(KeyCode.Space) && logoImage.color.a == 0f) { FadeInBlackScreen(); }
     }
 
     public void FadeOutBlackScreen() //zanikanie
@@ -44,16 +41,12 @@ public class StartSceneScript : MonoBehaviour
         robot.SetActive(true);      
     }
 
-    public void FadeOutLogoScreen()
-    {
-        logoImage.DOFade(0f, 2f);
-    }
+    public void FadeOutLogoScreen() { logoImage.DOFade(0f, 2f); }
 
     public void FadeInBlackScreen() //pojawianie
     {
         blackImage.DOColor(blackOpaque, fadingTime);
         Invoke(nameof(LoadMainScene), fadingTime);
-
     }
 
     public void LoadMainScene()
@@ -65,116 +58,60 @@ public class StartSceneScript : MonoBehaviour
     public void CheckPlayerPrefs()
     {
         //Hinst
-        if (!PlayerPrefs.HasKey("hintsON"))
-        {
-            PlayerPrefs.SetInt("hintsON", 1);
-        }
+        if (!PlayerPrefs.HasKey("hintsON")) { PlayerPrefs.SetInt("hintsON", 1); }
 
         //Difficulty
-        if (!PlayerPrefs.HasKey("difficulty"))
-        {
-            PlayerPrefs.SetInt("difficulty", 0);
-        }
+        if (!PlayerPrefs.HasKey("difficulty")) { PlayerPrefs.SetInt("difficulty", 0); }
 
         //Day Time
-        if (!PlayerPrefs.HasKey("dayTime"))
-        {
-            PlayerPrefs.SetInt("dayTime", 0);
-        }
+        if (!PlayerPrefs.HasKey("dayTime")) { PlayerPrefs.SetInt("dayTime", 0); }
+
         //Day Time Sun Position (Animation Time)
-        if (!PlayerPrefs.HasKey("sunAnimTime"))
-        {
-            PlayerPrefs.SetFloat("sunAnimTime", 0f);
-        }
+        if (!PlayerPrefs.HasKey("sunAnimTime")) { PlayerPrefs.SetFloat("sunAnimTime", 0f); }
 
         //Lights ON
-        if (!PlayerPrefs.HasKey("lightsON"))
-        {
-            PlayerPrefs.SetInt("LightsON", 0);
-        }
+        if (!PlayerPrefs.HasKey("lightsON")) { PlayerPrefs.SetInt("LightsON", 0); }
 
         //Music Volume
-        if (!PlayerPrefs.HasKey("musicVolume"))
-        {
-            PlayerPrefs.SetFloat("musicVolume", 75);
-        }
+        if (!PlayerPrefs.HasKey("musicVolume")) { PlayerPrefs.SetFloat("musicVolume", 75); }
 
         //Sound Volume
-        if (!PlayerPrefs.HasKey("soundVolume"))
-        {
-            PlayerPrefs.SetFloat("soundVolume", 100);
-        }
+        if (!PlayerPrefs.HasKey("soundVolume")) { PlayerPrefs.SetFloat("soundVolume", 100); }
 
         //Resolution Width
-        if (!PlayerPrefs.HasKey("resolutionWidth"))
-        {
-            PlayerPrefs.SetInt("resolutionWidth", 1600);
-        }
+        if (!PlayerPrefs.HasKey("resolutionWidth")) { PlayerPrefs.SetInt("resolutionWidth", 1600); }
 
         //Resolution Height
-        if (!PlayerPrefs.HasKey("resolutionHeight"))
-        {
-            PlayerPrefs.SetInt("resolutionHeight", 900);
-        }
+        if (!PlayerPrefs.HasKey("resolutionHeight")) { PlayerPrefs.SetInt("resolutionHeight", 900); }
 
         //Fullscreen
-        if (!PlayerPrefs.HasKey("fullscreen"))
-        {
-            PlayerPrefs.SetInt("fullscreen", 0);
-        }
+        if (!PlayerPrefs.HasKey("fullscreen")) { PlayerPrefs.SetInt("fullscreen", 0); }
 
         //Distance Traveled
-        if (!PlayerPrefs.HasKey("distanceTraveled"))
-        {
-            PlayerPrefs.SetInt("distanceTravelde", 0);
-        }
+        if (!PlayerPrefs.HasKey("distanceTraveled")) { PlayerPrefs.SetInt("distanceTravelde", 0); }
 
         //High Score Object
-        if (!PlayerPrefs.HasKey("highscoreObject"))
-        {
-            PlayerPrefs.SetInt("highscoreObject", 0);
-        }
+        if (!PlayerPrefs.HasKey("highscoreObject")) { PlayerPrefs.SetInt("highscoreObject", 0); }
 
         //HighScore
-        if (!PlayerPrefs.HasKey("highscore"))
-        {
-            PlayerPrefs.SetInt("highscore", 0);
-        }
+        if (!PlayerPrefs.HasKey("highscore")) { PlayerPrefs.SetInt("highscore", 0); }
         
         //HighScore
-        if (!PlayerPrefs.HasKey("totalscore"))
-        {
-            PlayerPrefs.SetInt("totalscore", 0);
-        }
+        if (!PlayerPrefs.HasKey("totalscore")) { PlayerPrefs.SetInt("totalscore", 0); }
 
         //Current Biome
-        if (!PlayerPrefs.HasKey("currentBiome"))
-        {
-            PlayerPrefs.SetString("currentBiome", "Industry");
-        }
+        if (!PlayerPrefs.HasKey("currentBiome")) { PlayerPrefs.SetString("currentBiome", "Industry"); }
 
         //Object Number
-        if (!PlayerPrefs.HasKey("numberObject"))
-        {
-            PlayerPrefs.SetInt("numberObject", 1);
-        }
+        if (!PlayerPrefs.HasKey("numberObject")) { PlayerPrefs.SetInt("numberObject", 1); }
 
         //Run On
-        if (!PlayerPrefs.HasKey("runON"))
-        {
-            PlayerPrefs.SetInt("runON", 0);
-        }
+        if (!PlayerPrefs.HasKey("runON")) { PlayerPrefs.SetInt("runON", 0); }
 
         //Player Dead
-        if (!PlayerPrefs.HasKey("playerDead"))
-        {
-            PlayerPrefs.SetInt("playerDead", 0);
-        }
+        if (!PlayerPrefs.HasKey("playerDead")) { PlayerPrefs.SetInt("playerDead", 0); }
 
         //Play Again
-        if (!PlayerPrefs.HasKey("playAgain"))
-        {
-            PlayerPrefs.SetInt("playAgain", 0);
-        }
+        if (!PlayerPrefs.HasKey("playAgain")) { PlayerPrefs.SetInt("playAgain", 0); }
     }
 }

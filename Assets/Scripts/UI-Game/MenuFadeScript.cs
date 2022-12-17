@@ -37,10 +37,7 @@ public class MenuFadeScript : MonoBehaviour
         Invoke(nameof(LoadMainScene), fadingTime);
     }
 
-    public void LoadMainScene()
-    {
-        StartCoroutine(LoadSceneAsync());
-    }
+    public void LoadMainScene() { StartCoroutine(LoadSceneAsync()); }
 
     IEnumerator LoadSceneAsync()
     {

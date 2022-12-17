@@ -23,32 +23,20 @@ public class PlayerDetectingObstacles : MonoBehaviour
         float vecX = hit.moveDirection.x;
         //float vecY = hit.moveDirection.y;
         //float vecZ = hit.moveDirection.z;
-        if (vecX > 0.9)
-        {
-            playerMov.MoveLeft();
-            playerHP.TakeDamage(damage);
-        }
-        if (vecX < -0.9)
-        {
-            playerMov.MoveRight();
-            playerHP.TakeDamage(damage);
-        }
+        if (vecX > 0.9) { playerHP.TakeDamage(damage); playerMov.MoveLeft(); }
+        if (vecX < -0.9) { playerHP.TakeDamage(damage); playerMov.MoveRight(); }
 
-        if (hit.collider.CompareTag("Obstacle"))
+        if (hit.moveDirection.z > 0.3)
         {
-            if(hit.moveDirection.z > 0.3)
-            {
-                Destroy(hit.collider.gameObject);
-                playerHP.TakeDamage(damage);
+            if (hit.collider.CompareTag("Obstacle")) 
+            { 
+                playerHP.TakeDamage(damage); 
+                Destroy(hit.collider.gameObject); 
             }
-        }
-        
-        if (hit.collider.CompareTag("StrongObstacle"))
-        {
-            if (hit.moveDirection.z > 0.3)
+            if (hit.collider.CompareTag("StrongObstacle"))
             {
                 playerHP.TakeDamage(9999);
             }
-        }  
+        } 
     }
 }
