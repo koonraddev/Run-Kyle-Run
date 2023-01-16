@@ -99,6 +99,7 @@ GameObject:
   - component: {fileID: 5198276546920483560}
   - component: {fileID: 5198276546920483558}
   - component: {fileID: 335210217}
+  - component: {fileID: 5416904260808181128}
   m_Layer: 0
   m_Name: PlayerObject
   m_TagString: PlayerCharacter
@@ -179,6 +180,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerObject: {fileID: 5198276546920483562}
+  gameSets: {fileID: 0}
+  counter: 0
+  zpow: 0
 --- !u!114 &335210217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -192,8 +196,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  currentHealth: 0
   dead: 0
+  takeDamage: 0
+--- !u!114 &5416904260808181128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5198276546920483562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96a74492031ddd2438638fc67fd644d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerObject: {fileID: 5198276546920483562}
+  movPlayer: {fileID: 5198276546920483561}
+  gameSets: {fileID: 0}
 --- !u!1 &5198276547638725769
 GameObject:
   m_ObjectHideFlags: 0

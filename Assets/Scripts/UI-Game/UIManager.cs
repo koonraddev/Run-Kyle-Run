@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class UIManager : MonoBehaviour
 {
@@ -13,23 +14,23 @@ public class UIManager : MonoBehaviour
 
     public GameObject distanceTriggerObject;
     private DistanceTrigger distTr;
-    public Vector3 hpON;
-    public Vector3 hpOFF;
+    public Vector2 hpON;
+    public Vector2 hpOFF;
 
-    public Vector3 powerON;
-    public Vector3 powerOFF;
+    public Vector2 powerON;
+    public Vector2 powerOFF;
 
-    public Vector3 distON;
-    public Vector3 distOFF;
+    public Vector2 distON;
+    public Vector2 distOFF;
 
-    public Vector3 biomeON;
-    public Vector3 biomeOFF;
+    public Vector2 biomeON;
+    public Vector2 biomeOFF;
 
-    public Vector3 hintsON;
-    public Vector3 hintsOFF;
+    public Vector2 hintsON;
+    public Vector2 hintsOFF;
 
-    public Vector3 blackStripeON;
-    public Vector3 blackStripeOFF;
+    public Vector2 blackStripeON;
+    public Vector2 blackStripeOFF;
  
     //[Header("HPSiderPositionX")]
     private float hpONPosX;
@@ -80,25 +81,20 @@ public class UIManager : MonoBehaviour
     private float stripesOFFPosY;
 
     public GameObject HPBar;
-    private RectTransform sliderTransform;
-    private Vector2 sliderPos;
     private Slider HPSlider;
-
-    public GameObject distance;
-    private RectTransform distanceTransform;
-    private Vector2 distancePos;
-    private TMP_Text distanceText;
+    public GameObject HPBarBackground;
+    private Slider HPSliderBackground;
 
     public GameObject powerBar;
-    private RectTransform powerSliderTransform;
-    private Vector2 powerSliderPos;
     private Slider powerSlider;
+    public GameObject powerBarBackground;
+    private Slider powerSliderBackground;
+
+    public GameObject distance;
+    private TMP_Text distanceText;
 
     public GameObject biomeObject;
-    private RectTransform biomeTransform;
-    private Vector2 biomePos;
     private TMP_Text biomeText;
-    public bool showBiome;
 
     public GameObject playerObject;
     private PlayerHealth playerHP;
@@ -108,60 +104,44 @@ public class UIManager : MonoBehaviour
     private GameController gameCtr;
 
     public GameObject hintsObject;
-    private RectTransform hintsTransform;
-    private Vector2 hintsPos;
     public int showHints;
 
     public GameObject stripeUPObject;
-    private RectTransform stripeUPTransform;
-    private Vector2 stripeUPPos;
 
     public GameObject stripeDownObject;
-    private RectTransform stripeDownTransform;
-    private Vector2 stripeDownPos;
     public bool showStripes;
+
     void Start()
     {
         SetCords();
 
         runON = false;
         pauseON = false;
-        sliderTransform = HPBar.GetComponent<RectTransform>();
-        sliderPos = sliderTransform.anchoredPosition;
-        
-        powerSliderTransform = powerBar.GetComponent<RectTransform>();
-        powerSliderPos = powerSliderTransform.anchoredPosition;
-        powerSlider = powerBar.GetComponent<Slider>();
-
-        distanceTransform = distance.GetComponent<RectTransform>();
-        distancePos = distanceTransform.anchoredPosition;
 
         distTr = distanceTriggerObject.GetComponent<DistanceTrigger>();
         distanceText = distance.GetComponent<TMP_Text>();
 
         playerHP = playerObject.GetComponent<PlayerHealth>();
+
         HPSlider = HPBar.GetComponent<Slider>();
+        HPSliderBackground = HPBarBackground.GetComponent<Slider>();
+
+        powerSlider = powerBar.GetComponent<Slider>();
+        powerSliderBackground = powerBarBackground.GetComponent<Slider>();
 
         gameCtr = gameControllerObject.GetComponent<GameController>();
 
         biomeText = biomeObject.GetComponent<TMP_Text>();
-        biomeTransform = biomeObject.GetComponent<RectTransform>();
-        biomePos = biomeTransform.anchoredPosition;
-        showBiome = false;
 
         showHints = PlayerPrefs.GetInt("hintsON");
-        hintsTransform = hintsObject.GetComponent<RectTransform>();
-        hintsPos = hintsTransform.anchoredPosition;
-        
-        stripeUPTransform = stripeUPObject.GetComponent<RectTransform>();
-        stripeUPPos = stripeUPTransform.anchoredPosition;
-        
-        stripeDownTransform = stripeDownObject.GetComponent<RectTransform>();
-        stripeDownPos = stripeDownTransform.anchoredPosition;
-        showStripes = false;
 
-        HPSlider.maxValue = playerHP.GetCurrentHP();
-        powerSlider.maxValue = gameCtr.GetPowerValue();
+        HPSlider.maxValue = gameCtr.GetMaxHealthValue();
+        HPSliderBackground.value = gameCtr.GetMaxHealthValue();
+        powerSlider.maxValue = gameCtr.GetMaxPowerValue();
+        powerSliderBackground.maxValue = gameCtr.GetMaxPowerValue();
+
+
+        SetStartPositions();
 
     }
 
@@ -172,50 +152,6 @@ public class UIManager : MonoBehaviour
         HPSlider.value = playerHP.GetCurrentHP();
         powerSlider.value = gameCtr.GetPowerValue();
 
-        //HP Bar; Power Bar; Distance
-        if (runON && !pauseON) // SHOW HP Bar; Power Bar; Distance
-        {      
-            HPBar.transform.localPosition = Vector3.MoveTowards(HPBar.transform.localPosition, new Vector3(sliderPos.x + hpONPosX, sliderPos.y + hpONPosY), step * 100);
-            powerBar.transform.localPosition = Vector3.MoveTowards(powerBar.transform.localPosition, new Vector3(powerSliderPos.x + powerONPosX, powerSliderPos.y + powerONPosY), step * 100);
-            distance.transform.localPosition = Vector3.MoveTowards(distance.transform.localPosition, new Vector3(distancePos.x + distONPosX, distancePos.y + distONPosY), step * 100);
-            
-            //Hints
-            if (showHints == 1) hintsObject.transform.localPosition = Vector3.MoveTowards(hintsObject.transform.localPosition, new Vector3(hintsPos.x + hintsONPosX, hintsPos.y + hintsONPosY), step * 100);
-            else hintsObject.transform.localPosition = Vector3.MoveTowards(hintsObject.transform.localPosition, new Vector3(hintsPos.x + hintsOFFPosX, hintsPos.y + hintsOFFPosY), step * 100);
-        }
-        else
-        {
-            // HIDE HP Bar; Power Bar; Distance
-            HPBar.transform.localPosition = Vector3.MoveTowards(HPBar.transform.localPosition, new Vector3(sliderPos.x + hpOFFPosX, sliderPos.y + hpOFFPosY), step * 100);
-            powerBar.transform.localPosition = Vector3.MoveTowards(powerBar.transform.localPosition, new Vector3(powerSliderPos.x + powerOFFPosX, powerSliderPos.y + powerOFFPosY), step * 100);
-            distance.transform.localPosition = Vector3.MoveTowards(distance.transform.localPosition, new Vector3(distancePos.x + distOFFPosX, distancePos.y + distOFFPosY), step * 100);
-        }
-
-        //Biome
-        if (showBiome) //SHOW Biome
-        {
-            stripeUPObject.transform.localPosition = Vector3.MoveTowards(stripeUPObject.transform.localPosition, new Vector3(stripeUPPos.x + stripesONPosX, stripeUPPos.y + stripesONPosY), step * 30);
-            stripeDownObject.transform.localPosition = Vector3.MoveTowards(stripeDownObject.transform.localPosition, new Vector3(stripeDownPos.x - stripesONPosX, stripeDownPos.y - stripesONPosY), step * 30);
-            //Stripes
-            if (showStripes) //Show Stripes
-            {
-                biomeObject.transform.localPosition = Vector3.MoveTowards(biomeObject.transform.localPosition, new Vector3(biomePos.x + biomeONPosX, biomePos.y + biomeONPosY), step * 30);
-            }
-            else //Hide Stripes
-            {
-                biomeObject.transform.localPosition = Vector3.MoveTowards(biomeObject.transform.localPosition, new Vector3(biomePos.x + biomeOFFPosX, biomePos.y + biomeOFFPosY), step * 30);
-                Invoke(nameof(BlackStripesHide), 4f);
-
-            }
-            Invoke(nameof(BiomeTextHide), 5f);
-        }
-        else //HIDE Biome
-        {
-            stripeUPObject.transform.localPosition = Vector3.MoveTowards(stripeUPObject.transform.localPosition, new Vector3(stripeUPPos.x + stripesOFFPosX, stripeUPPos.y + stripesOFFPosY), step * 30);
-            stripeDownObject.transform.localPosition = Vector3.MoveTowards(stripeDownObject.transform.localPosition, new Vector3(stripeDownPos.x - stripesOFFPosX, stripeDownPos.y - stripesOFFPosY), step * 30);
-            biomeObject.transform.localPosition = Vector3.MoveTowards(biomeObject.transform.localPosition, new Vector3(biomePos.x + biomeOFFPosX, biomePos.y + biomeOFFPosY), step * 30);
-        }
-
         if (playerHP.dead)
         {
             gameCtr.gameOver = true;
@@ -223,6 +159,49 @@ public class UIManager : MonoBehaviour
         }
     }
 
+
+    public IEnumerator ShowBiome()
+    {
+        Sequence seqShow = DOTween.Sequence()
+            .Append(stripeUPObject.transform.DOLocalMove(new Vector2(stripesONPosX, stripesONPosY), 0.5f).SetEase(Ease.Linear))
+            .Join(stripeDownObject.transform.DOLocalMove(new Vector2(-stripesONPosX, -stripesONPosY), 0.5f).SetEase(Ease.Linear))
+            .Append(biomeObject.transform.DOLocalMove(new Vector2(biomeONPosX, biomeONPosY), 0.5f).SetDelay(1f))
+            .AppendInterval(2f);
+
+
+        yield return seqShow.WaitForCompletion();
+
+        Sequence seqHide = DOTween.Sequence()
+            .Append(biomeObject.transform.DOLocalMove(new Vector2(biomeOFFPosX, biomeOFFPosY), 0.5f))
+            .Append(stripeUPObject.transform.DOLocalMove(new Vector2(stripesOFFPosX, stripesOFFPosY), 0.5f).SetEase(Ease.Linear))
+            .Join(stripeDownObject.transform.DOLocalMove(new Vector2(-stripesOFFPosX, -stripesOFFPosY), 0.5f).SetEase(Ease.Linear));
+
+    }
+
+    public void ShowRunUI()
+    {
+        HPBar.transform.DOLocalMove(new Vector2(hpONPosX, hpONPosY), 0.5f).SetEase(Ease.Linear);
+        HPBarBackground.transform.DOLocalMove(new Vector2(hpONPosX, hpONPosY), 0.5f).SetEase(Ease.Linear);
+        powerBar.transform.DOLocalMove(new Vector2(powerONPosX, powerONPosY), 0.5f).SetEase(Ease.Linear);
+        powerBarBackground.transform.DOLocalMove(new Vector2(powerONPosX, powerONPosY), 0.5f).SetEase(Ease.Linear);
+        distance.transform.DOLocalMove(new Vector2(distONPosX, distONPosY), 0.5f).SetEase(Ease.Linear);
+        if (showHints == 1)
+        {
+            hintsObject.transform.DOLocalMove(new Vector2(hintsONPosX, hintsONPosY), 0.5f).SetEase(Ease.Linear);
+        }
+    }
+
+    public void SetStartPositions()
+    {
+        stripeUPObject.transform.localPosition = new Vector2(stripesOFFPosX, stripesOFFPosY);
+        stripeDownObject.transform.localPosition = new Vector2(-stripesOFFPosX, -stripesOFFPosY);
+        biomeObject.transform.localPosition = new Vector2(biomeOFFPosX, biomeOFFPosY);
+        HPBar.transform.localPosition = new Vector2(hpOFFPosX, hpOFFPosY);
+        HPBarBackground.transform.localPosition = new Vector2(hpOFFPosX, hpOFFPosY);
+        powerBar.transform.localPosition = new Vector2(powerOFFPosX, powerOFFPosY);
+        powerBarBackground.transform.localPosition = new Vector2(powerOFFPosX, powerOFFPosY);
+        distance.transform.localPosition = new Vector2(distOFFPosX, distOFFPosY);
+    }
     private void SetCords()
     {
         hpONPosX = hpON.x;
@@ -262,17 +241,39 @@ public class UIManager : MonoBehaviour
         stripesOFFPosY = blackStripeOFF.y;
     }
 
-    public void RunChangeStatus() { runON = !runON; }
+    public void RunChangeStatus() 
+    {
+        runON = !runON;
+        ShowRunUI();
+    }
+
+    public void ChangeHPBackground()
+    {
+        var HPBackgroundNewValue = HPSlider.value;
+        if (HPSlider.value > HPSliderBackground.value)
+        {
+            HPSliderBackground.value = HPSlider.value;
+        }
+        else
+        {
+            HPSliderBackground.DOValue(HPBackgroundNewValue, 1f);
+        }
+    }
+
+    public void ChangePowerBackground()
+    {
+        var powerBackgroundNewValue = powerSlider.value;
+        if (powerSlider.value > powerSliderBackground.value)
+        {
+            powerSliderBackground.value = powerSlider.value;
+        }
+        else
+        {
+            powerSliderBackground.DOValue(powerBackgroundNewValue, 1f);
+        }
+    }
 
     public void ChangeBiomeText() { biomeText.text = "Biome: " + PlayerPrefs.GetString("currentBiome"); }
-
-    public void BiomeTextShowUP() { showBiome = true; Invoke(nameof(BlackStripesShow), 1.5f); }
-
-    public void BiomeTextHide() { showBiome = false; }
-
-    public void BlackStripesShow() { showStripes = true; }
-
-    public void BlackStripesHide() { showStripes = false; }
 
     public void ChangeHintsStatus() { showHints = PlayerPrefs.GetInt("hintsON"); }
 }

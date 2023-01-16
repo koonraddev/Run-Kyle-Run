@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public int maxHealth;
+    private GameController gameController;
     private int currentHealth;
 
     public bool dead;
     public bool takeDamage;
     void Start()
     {
+        gameController = FindObjectOfType<GameController>();
         takeDamage = true;
-        currentHealth = maxHealth;
+        currentHealth = gameController.GetMaxHealthValue();
         dead = false;
     }
 

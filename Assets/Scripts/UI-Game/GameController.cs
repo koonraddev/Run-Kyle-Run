@@ -23,6 +23,8 @@ public class GameController : MonoBehaviour
     private PlayerMovement playerMov;
     private PlayerHealth playerHP;
 
+    public int maxHealth;
+
     public GameObject mainCam;
     private CameraMovement camMov;
 
@@ -38,12 +40,14 @@ public class GameController : MonoBehaviour
     public int powerCharge;
 
     private int power;
+    private int maxPower;
     private float powerDownCounter;
     private float powerUpCounter;
     private bool isPower;
     void Start()
     {
-        power = 100;
+        maxPower = 100;
+        power = maxPower;
         gameOver = false;
         gamePaused = false;
         playerMov = playerObject.GetComponent<PlayerMovement>();
@@ -61,7 +65,7 @@ public class GameController : MonoBehaviour
         gameON = playerMov.runON;
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            if (power>= powerRunConsume)
+            if (power >= powerRunConsume)
             {
                 isPower = true;
                 PowerDown(powerRunConsume);
@@ -73,7 +77,10 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            PowerUP(powerCharge);
+            if(power < maxPower)
+            {
+                PowerUP(powerCharge);
+            }
         }
 
         if (playerHP.dead == true)
@@ -106,7 +113,12 @@ public class GameController : MonoBehaviour
     }
     public int GetPowerValue() { return power; }
 
+    public int GetMaxPowerValue() { return maxPower; }
+
     public bool GetPowerStatus() { return isPower; }
+
+
+    public int GetMaxHealthValue() { return maxHealth; }
 
     public void StopMovingObjects()
     {

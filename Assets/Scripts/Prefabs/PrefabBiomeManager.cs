@@ -19,7 +19,10 @@ public class PrefabBiomeManager : MonoBehaviour
         {
             PlayerPrefs.SetString("currentBiome", biomeName);
             managerUI.ChangeBiomeText();
-            managerUI.BiomeTextShowUP();
+            StartCoroutine(managerUI.ShowBiome());
+            //managerUI.BiomeTextShowUP();
+
+
         }
     }
 }
