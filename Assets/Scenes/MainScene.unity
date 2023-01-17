@@ -23520,7 +23520,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1000011999022916, guid: 164dfab8c233b104aa94b7e4ece709bb, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1000011999022916, guid: 164dfab8c233b104aa94b7e4ece709bb, type: 3}
       propertyPath: m_TagString
@@ -34843,6 +34843,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2683585026742644852, guid: fe1a3e75add016646b067c2a456179c0, type: 3}
+      propertyPath: y
+      value: 0.8
+      objectReference: {fileID: 0}
     - target: {fileID: 2683585026742644852, guid: fe1a3e75add016646b067c2a456179c0, type: 3}
       propertyPath: gameSets
       value: 
