@@ -4,27 +4,34 @@ using UnityEngine;
 
 public class PlayerDetectingObstacles : MonoBehaviour
 {
-    public GameObject playerObject;
-    private PlayerHealth playerHP;
-
+    public CameraMovement camMov;
     public GameSettings gameSets;
-    public float counter = 0f;
-    public float zpow;
+    public GameObject boomEffect;
+
+    private PlayerHealth playerHP;
     private PlayerMovement playerMov;
     private void Start()
     {
         playerMov = gameObject.GetComponent<PlayerMovement>();
-        playerHP = playerObject.GetComponent<PlayerHealth>();
+        playerHP = gameObject.GetComponent<PlayerHealth>();
     }
 
     private void Update()
     {
+        FrontCollisionDetection();      
+    }
+
+    private void FrontCollisionDetection()
+    {
         var damage = gameSets.GetDamge();
-        if (Physics.Raycast(transform.position + new Vector3(0, 0.8f, 0), Vector3.forward, out RaycastHit hitInfo,1f))
+        damage = 0;
+        if (Physics.Raycast(transform.position + new Vector3(0, 0.8f, 0), Vector3.forward, out RaycastHit hitInfo, 0.65f))
         {
             if (hitInfo.collider.CompareTag("Obstacle"))
             {
+                StartCoroutine(camMov.CameraShake()); ;
                 playerHP.TakeDamage(damage);
+                Instantiate(boomEffect, hitInfo.point, new Quaternion(0f, 0f, 0f, 0f));
                 Destroy(hitInfo.collider.gameObject);
             }
 
@@ -32,14 +39,27 @@ public class PlayerDetectingObstacles : MonoBehaviour
             {
                 playerHP.TakeDamage(9999);
             }
-        }        
+        }
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         var damage = gameSets.GetDamge();
+        damage = 0;
         float vecX = hit.moveDirection.x;
-        if (vecX > 0.9) { playerHP.TakeDamage(damage); playerMov.MoveLeft(); }
-        if (vecX < -0.9) { playerHP.TakeDamage(damage); playerMov.MoveRight(); }
+        if (vecX > 0.9) 
+        {
+            playerMov.MoveLeft();
+            StartCoroutine(camMov.CameraShake());
+            playerHP.TakeDamage(damage); 
+            Instantiate(boomEffect, hit.point, new Quaternion(0f, 0f ,0f ,0f)); 
+        }
+        if (vecX < -0.9) 
+        {
+            playerMov.MoveRight();
+            StartCoroutine(camMov.CameraShake()); ;
+            playerHP.TakeDamage(damage);
+            Instantiate(boomEffect, hit.point, new Quaternion(0f, 0f, 0f, 0f)); 
+        }
     }
 }

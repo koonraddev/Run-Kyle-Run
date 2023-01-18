@@ -176,6 +176,11 @@ public class UIManager : MonoBehaviour
             .Append(stripeUPObject.transform.DOLocalMove(new Vector2(stripesOFFPosX, stripesOFFPosY), 0.5f).SetEase(Ease.Linear))
             .Join(stripeDownObject.transform.DOLocalMove(new Vector2(-stripesOFFPosX, -stripesOFFPosY), 0.5f).SetEase(Ease.Linear));
 
+        seqHide.OnComplete( ()=> {
+            seqShow.Kill();
+            seqHide.Kill();
+        });
+        
     }
 
     public void ShowRunUI()

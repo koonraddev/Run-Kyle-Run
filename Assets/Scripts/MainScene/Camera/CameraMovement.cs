@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class CameraMovement : MonoBehaviour
 {
@@ -50,10 +51,22 @@ public class CameraMovement : MonoBehaviour
     private float x;
     private float y;
 
+    private GameObject cameraGhost;
+
     private GameController gameCtrl;
+
+    private bool isPower;
+    public Vector3 cameraPos;
+    public Vector3 ghostPos;
+    public Vector3 oldPos;
+    public Vector3 wek;
+    public Vector3 wek2;
     void Start()
     {
+        oldPos = gameObject.transform.position;
         gameCtrl = FindObjectOfType<GameController>();
+        cameraGhost = new GameObject();
+        cameraGhost.transform.position = gameObject.transform.position;
         shiftingBackCamRatio = ShiftingBackCamFov / NOShiftingBackCamFov;
         backCamera = true;
         runON = false;
@@ -67,7 +80,11 @@ public class CameraMovement : MonoBehaviour
 
     void Update()
     {
-        var isPower = gameCtrl.GetPowerStatus();
+        cameraPos = gameObject.transform.position;
+        ghostPos = cameraGhost.transform.position;
+        wek = oldPos - cameraGhost.transform.position;
+
+        isPower = gameCtrl.GetPowerStatus();
         BackCameraPosition = BackCameraStartPlace;
         FrontCameraPosition = FrontCameraPlace.position;
         if (cameraMode == 1)
@@ -117,16 +134,49 @@ public class CameraMovement : MonoBehaviour
 
     }
 
+    public IEnumerator CameraShake()
+    {
+        cameraGhost.transform.position = gameObject.transform.position;
+        oldPos = gameObject.transform.position;
+
+        var tweener = cameraGhost.transform.DOShakePosition(0.5f, new Vector3(0.5f, 0.5f, 0), 10, 90, false, true, ShakeRandomnessMode.Full);
+
+        while (tweener.IsActive()) { yield return null; }
+        
+        /*
+        Sequence sekw = DOTween.Sequence()
+            .Append(cameraGhost.transform.DOShakePosition(0.5f, new Vector3(0.5f, 0.5f, 0), 10, 90, false, true, ShakeRandomnessMode.Full));
+
+        yield return sekw.WaitForCompletion();
+
+        sekw.OnComplete(() =>
+        {
+            wek = Vector3.zero;
+            sekw.Kill();
+        */
+        //if (gameObject.transform.position != oldPos)
+        //{
+        //    Debug.Log("zero");
+        //    wek = Vector3.zero;
+        //}
+        //gameObject.transform.position = new Vector3(BackCameraPosition.x + x, BackCameraPosition.y + y, BackCameraPosition.z);
+        //cameraGhost.transform.position = gameObject.transform.position;
+        //oldPos = gameObject.transform.position;
+        //wek = Vector3.zero;
+        
+    }
+        
+
     public void CameraShifting()
     {
         frequency = runFrequency;
         if (playerMov.ctr.isGrounded)
         {
-            mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, new Vector3(BackCameraPosition.x + x, BackCameraPosition.y + y, BackCameraPosition.z), step * multiplier);
+            mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, new Vector3(BackCameraPosition.x + x, BackCameraPosition.y + y, BackCameraPosition.z) + wek, step * multiplier);
         }
         else
         {
-            mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, BackCameraPosition, step * multiplier);
+            mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, BackCameraPosition + wek, step * multiplier);
         }
         mainCamera.transform.rotation = Quaternion.Slerp(mainCamera.transform.rotation, BackCameraPlace.rotation, step);
         //mainCamera.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, ShiftingFov, speed * Time.deltaTime);
@@ -148,8 +198,8 @@ public class CameraMovement : MonoBehaviour
     private void CameraNoShifting()
     {
         frequency = baseFrequency;
-        if (playerMov.ctr.isGrounded) { mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, new Vector3(BackCameraPosition.x + x, BackCameraPosition.y + y, BackCameraPosition.z), step * multiplier); }
-        else { mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, BackCameraPosition, step * multiplier); }
+        if (playerMov.ctr.isGrounded) { mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, new Vector3(BackCameraPosition.x + x, BackCameraPosition.y + y, BackCameraPosition.z) + wek, step * multiplier); }
+        else { mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, BackCameraPosition + wek, step * multiplier); }
 
         mainCamera.transform.rotation = Quaternion.Slerp(mainCamera.transform.rotation, BackCameraPlace.rotation, step);
         mainCamera.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, NOShiftingBackCamFov, speed * Time.deltaTime);

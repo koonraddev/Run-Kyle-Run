@@ -312,11 +312,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8363357017680027801, guid: d91ab517a9890f548bbd54d30a0cc008, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8363357017680027801, guid: d91ab517a9890f548bbd54d30a0cc008, type: 3}
       propertyPath: m_SkinWidth
-      value: 0.04
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 8363357017680027801, guid: d91ab517a9890f548bbd54d30a0cc008, type: 3}
       propertyPath: m_SlopeLimit
@@ -324,7 +324,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8363357017680027801, guid: d91ab517a9890f548bbd54d30a0cc008, type: 3}
       propertyPath: m_StepOffset
-      value: 0.5
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 9084166579368905560, guid: d91ab517a9890f548bbd54d30a0cc008, type: 3}
       propertyPath: gameSets
