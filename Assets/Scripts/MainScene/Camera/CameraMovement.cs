@@ -56,13 +56,15 @@ public class CameraMovement : MonoBehaviour
     private GameController gameCtrl;
 
     private bool isPower;
-    public Vector3 cameraPos;
-    public Vector3 ghostPos;
-    public Vector3 oldPos;
-    public Vector3 wek;
-    public Vector3 wek2;
+    private Vector3 cameraPos;
+    private Vector3 ghostCamPos; 
+    private Vector3 oldPos;
+    private Vector3 finalShakeVector;
+
+    public bool shakeOFF;
     void Start()
     {
+        shakeOFF = true;
         oldPos = gameObject.transform.position;
         gameCtrl = FindObjectOfType<GameController>();
         cameraGhost = new GameObject();
@@ -80,9 +82,7 @@ public class CameraMovement : MonoBehaviour
 
     void Update()
     {
-        cameraPos = gameObject.transform.position;
-        ghostPos = cameraGhost.transform.position;
-        wek = oldPos - cameraGhost.transform.position;
+
 
         isPower = gameCtrl.GetPowerStatus();
         BackCameraPosition = BackCameraStartPlace;
@@ -102,6 +102,20 @@ public class CameraMovement : MonoBehaviour
             scale = 2 / (3 - Mathf.Cos(2 * (angle + Time.time * frequency)));
             x = scale * Mathf.Cos(angle + Time.time * frequency) * lineScaleX;
             y = scale * Mathf.Sin(2 * (angle + Time.time * frequency)) / 2 * lineScaleY;
+
+
+            if (shakeOFF == true) //camera shake effects off
+            {
+                finalShakeVector = Vector3.MoveTowards(finalShakeVector, Vector3.zero, step);
+            }
+            else
+            {
+                cameraPos = gameObject.transform.position;
+                ghostCamPos = cameraGhost.transform.position;
+                finalShakeVector = oldPos - ghostCamPos;
+
+            }
+
             if (backCamera)
             {
                 if (Input.GetKey(KeyCode.LeftShift) && isPower) { CameraShifting(); }
@@ -136,34 +150,13 @@ public class CameraMovement : MonoBehaviour
 
     public IEnumerator CameraShake()
     {
-        cameraGhost.transform.position = gameObject.transform.position;
-        oldPos = gameObject.transform.position;
+        cameraGhost.transform.position = BackCameraPosition;
+        oldPos = BackCameraPosition;
 
         var tweener = cameraGhost.transform.DOShakePosition(0.5f, new Vector3(0.5f, 0.5f, 0), 10, 90, false, true, ShakeRandomnessMode.Full);
 
-        while (tweener.IsActive()) { yield return null; }
-        
-        /*
-        Sequence sekw = DOTween.Sequence()
-            .Append(cameraGhost.transform.DOShakePosition(0.5f, new Vector3(0.5f, 0.5f, 0), 10, 90, false, true, ShakeRandomnessMode.Full));
-
-        yield return sekw.WaitForCompletion();
-
-        sekw.OnComplete(() =>
-        {
-            wek = Vector3.zero;
-            sekw.Kill();
-        */
-        //if (gameObject.transform.position != oldPos)
-        //{
-        //    Debug.Log("zero");
-        //    wek = Vector3.zero;
-        //}
-        //gameObject.transform.position = new Vector3(BackCameraPosition.x + x, BackCameraPosition.y + y, BackCameraPosition.z);
-        //cameraGhost.transform.position = gameObject.transform.position;
-        //oldPos = gameObject.transform.position;
-        //wek = Vector3.zero;
-        
+        while (tweener.IsActive()) { shakeOFF = false;  yield return null; }
+        shakeOFF = true;  
     }
         
 
@@ -172,11 +165,11 @@ public class CameraMovement : MonoBehaviour
         frequency = runFrequency;
         if (playerMov.ctr.isGrounded)
         {
-            mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, new Vector3(BackCameraPosition.x + x, BackCameraPosition.y + y, BackCameraPosition.z) + wek, step * multiplier);
+            mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, new Vector3(BackCameraPosition.x + x, BackCameraPosition.y + y, BackCameraPosition.z) + finalShakeVector, step * multiplier);
         }
         else
         {
-            mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, BackCameraPosition + wek, step * multiplier);
+            mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, BackCameraPosition + finalShakeVector, step * multiplier);
         }
         mainCamera.transform.rotation = Quaternion.Slerp(mainCamera.transform.rotation, BackCameraPlace.rotation, step);
         //mainCamera.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, ShiftingFov, speed * Time.deltaTime);
@@ -198,8 +191,8 @@ public class CameraMovement : MonoBehaviour
     private void CameraNoShifting()
     {
         frequency = baseFrequency;
-        if (playerMov.ctr.isGrounded) { mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, new Vector3(BackCameraPosition.x + x, BackCameraPosition.y + y, BackCameraPosition.z) + wek, step * multiplier); }
-        else { mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, BackCameraPosition + wek, step * multiplier); }
+        if (playerMov.ctr.isGrounded) { mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, new Vector3(BackCameraPosition.x + x, BackCameraPosition.y + y, BackCameraPosition.z) + finalShakeVector, step * multiplier); }
+        else { mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, BackCameraPosition + finalShakeVector, step * multiplier); }
 
         mainCamera.transform.rotation = Quaternion.Slerp(mainCamera.transform.rotation, BackCameraPlace.rotation, step);
         mainCamera.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, NOShiftingBackCamFov, speed * Time.deltaTime);
