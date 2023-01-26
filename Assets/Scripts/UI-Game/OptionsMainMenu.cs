@@ -50,6 +50,11 @@ public class OptionsMainMenu : MonoBehaviour
 
     Resolution[] resolutions;
 
+    public GameObject backButtonObject;
+    private Button backButton;
+
+    public GameObject optionsTriggerObject;
+    private OptionsTrigger optionsTrigger;
     void Start()
     {
         gameSets = gameController.GetComponent<GameSettings>();
@@ -76,7 +81,23 @@ public class OptionsMainMenu : MonoBehaviour
         GetSound();
         GetDayTime();
         SetScores();
+
+        optionsTrigger = optionsTriggerObject.GetComponent<OptionsTrigger>();
+        SetButtonActive();
     }
+
+    public void SetButtonActive()
+    {
+        backButton = backButtonObject.GetComponent<Button>();
+        backButton.Select();
+    }
+
+    public void BackToMenu()
+    {
+        gameObject.SetActive(false);
+        optionsTrigger.SetButtonActive();
+    }
+
 
     public void OnApplyButtonClick()
     {

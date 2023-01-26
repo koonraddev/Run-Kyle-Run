@@ -36,33 +36,38 @@ public class GameOverScene : MonoBehaviour
 
     public GameObject statusMenu;
 
+    private GameObject playButtonObject;
+    private GameObject endButtonObject;
+
+    private Button playButton;
+    private Button endButton;
+
     void Start()
     {
         blackImage = blackScreenObject.GetComponent<Image>();
         blackTransparent.a = 0f;
         Invoke(nameof(FadeOutBlackScreen), 1f);
-        Invoke(nameof(MovePlayer), 1.3f);
+        Invoke(nameof(GameOver),1.2f);
+
+
         mainCamera.transform.SetPositionAndRotation(startCameraPos.position, startCameraPos.rotation);
         PlayerPrefs.SetInt("playerDead", 1);
         PlayerPrefs.SetInt("runON", 0);
     }
 
-    // Update is called once per frame
-    void Update()
+
+    public void GameOver()
     {
-        var step = speed * Time.deltaTime;
-        if (playerObject.transform.position.z >= doorsTrigger.transform.position.z)
-        {
-            leftDoor.transform.rotation = Quaternion.Slerp(leftDoor.transform.rotation, leftDoorPosClose.rotation, step);
-            rightDoor.transform.rotation = Quaternion.Slerp(rightDoor.transform.rotation, rightDoorPosClose.rotation, step);
-        }
+        Sequence gameOverSeq = DOTween.Sequence()
+            .Append(playerObject.transform.DOMove(new Vector3(playerObject.transform.position.x, playerObject.transform.position.y, 10f), 1).SetEase(Ease.Linear))
+            .Append(leftDoor.transform.DORotateQuaternion(leftDoorPosClose.rotation, 1f))
+            .Join(rightDoor.transform.DORotateQuaternion(rightDoorPosClose.rotation, 0.6f))
+            .Join(mainCamera.transform.DOMove(endCameraPos.position, 1f).SetEase(Ease.InQuart))
+            .Join(mainCamera.transform.DORotateQuaternion(endCameraPos.rotation, 0.5f));
 
-        if (leftDoor.transform.rotation.eulerAngles.y < 95f)
-        {
-            mainCamera.transform.SetPositionAndRotation(Vector3.MoveTowards(mainCamera.transform.position, endCameraPos.position, step), Quaternion.Slerp(mainCamera.transform.rotation, endCameraPos.rotation, step / 2));
-        }
-
-        if (mainCamera.transform.position == endCameraPos.position) { ActiveStatusMenu(); }
+        gameOverSeq.OnComplete(() => {
+            ActiveStatusMenu();
+        });
     }
 
     public void CheckSetScores()
@@ -111,6 +116,14 @@ public class GameOverScene : MonoBehaviour
         distanceText.text = PlayerPrefs.GetInt("distanceTraveled").ToString() + " m";
         numberObjectText.text = PlayerPrefs.GetInt("numberObject").ToString();
         biomeText.text = PlayerPrefs.GetString("currentBiome");
+
+        endButtonObject = GameObject.Find("MainMenuButton");
+        endButton = endButtonObject.GetComponent<Button>();
+        playButtonObject = GameObject.Find("PlayAgainButton");
+        playButton = playButtonObject.GetComponent<Button>();
+
+        
+        playButton.Select();
     }
 
     public void FadeInBlackScreen() //pojawianie
@@ -141,7 +154,5 @@ public class GameOverScene : MonoBehaviour
             yield return null;
         }
     }
-
-    public void MovePlayer() { playerObject.GetComponent<Rigidbody>().AddForce(new Vector3(0f, 200, 1000)); }
 
 }

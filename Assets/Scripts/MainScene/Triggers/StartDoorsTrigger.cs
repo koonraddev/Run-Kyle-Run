@@ -18,7 +18,7 @@ public class StartDoorsTrigger : MonoBehaviour
 
     void Start()
     {
-        openDoors = false;
+        //openDoors = false;
     }
 
     void Update()
@@ -32,7 +32,7 @@ public class StartDoorsTrigger : MonoBehaviour
         else
         {
             leftDoor.transform.SetPositionAndRotation(Vector3.MoveTowards(leftDoor.transform.position, leftDoorStartPos.position, step * 10), Quaternion.Slerp(leftDoor.transform.rotation, leftDoorStartPos.localRotation, step));
-            rightDoor.transform.SetPositionAndRotation(Vector3.MoveTowards(rightDoor.transform.position, rightDoorStartPos.position, step * 10), Quaternion.Slerp(rightDoor.transform.rotation,rightDoorStartPos.localRotation, step));
+            rightDoor.transform.SetPositionAndRotation(Vector3.MoveTowards(rightDoor.transform.position, rightDoorStartPos.position, step * 10), Quaternion.Slerp(rightDoor.transform.rotation, rightDoorStartPos.localRotation, step));
         }
     }
     private void OnTriggerStay(Collider enterInfo)
@@ -41,5 +41,13 @@ public class StartDoorsTrigger : MonoBehaviour
         if (player != null) { openDoors = true; }
     }
 
-    public void ChangeDoorsStatus() { openDoors = !openDoors; }
+    public void OpenDoors()
+    {
+        openDoors = true;
+    }
+
+    public void CloseDoors()
+    {
+        openDoors = false;
+    }
 }

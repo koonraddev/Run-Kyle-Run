@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using DG.Tweening;
-public class PlayTrigger : MonoBehaviour
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
+
+public class PlayTrigger : MonoBehaviour, ISelectHandler, IDeselectHandler
 {
+   
     public GameObject playerObject;
     private Animator animator;
 
@@ -36,6 +40,8 @@ public class PlayTrigger : MonoBehaviour
     public Color mouseOnColor;
     public float changeDuration;
 
+
+    private Button playButton;
     void Start()
     {
         animator = playerObject.GetComponent<Animator>();
@@ -51,25 +57,65 @@ public class PlayTrigger : MonoBehaviour
         startDTrigger = startDoorsTriggerObj.GetComponent<StartDoorsTrigger>();
         lightMustBeON = false;
         Invoke(nameof(PlayAgainCheck), 1f);
+        CheckDayTimeStatus();
+        playButton = gameObject.GetComponent<Button>();
+        playButton.Select();
+        SelectPlay();
     }
 
     void Update()
     {
+        CheckDayTimeStatus();
+    }
+
+    private void CheckDayTimeStatus()
+    {
         var dayTime = PlayerPrefs.GetInt("dayTime");
         var lights = PlayerPrefs.GetInt("lightsON");
-        if ((dayTime == 3 || dayTime == 4) && lights == 1) { lightsON = true; }         
+        if ((dayTime == 3 || dayTime == 4) && lights == 1) { lightsON = true; }
     }
 
     public void PlayAgainCheck()
     {
         if (PlayerPrefs.GetInt("playAgain") == 1)
         {
-            OnMouseDown();
+            ClickPlay();
             PlayerPrefs.SetInt("playAgain", 0);
         }
     }
 
+    /*
     public void OnMouseDown()
+    {
+        ClickPlay();
+    }
+
+    private void OnMouseEnter()
+    {
+        SelectPlay();
+    }
+
+    private void OnMouseExit()
+    {
+        DeselectPlay();
+    }
+    */
+
+    public void SelectPlay()
+    {
+        playText.DOColor(mouseOnColor, changeDuration);
+        startDTrigger.OpenDoors();
+        if (lightsON) lightPlay.SetActive(true);
+    }
+
+    public void DeselectPlay()
+    {
+        playText.DOColor(basicColor, changeDuration);
+        startDTrigger.CloseDoors();
+        if (!lightMustBeON) lightPlay.SetActive(false);
+    }
+
+    public void ClickPlay()
     {
         PlayerPrefs.SetInt("runON", 1);
         camCtr.PlayCameraPlace();
@@ -98,17 +144,13 @@ public class PlayTrigger : MonoBehaviour
         //}
     }
 
-    private void OnMouseEnter()
+    public void OnSelect(BaseEventData eventData)
     {
-        playText.DOColor(mouseOnColor, changeDuration);
-        startDTrigger.ChangeDoorsStatus();
-        if (lightsON) lightPlay.SetActive(true);
+        SelectPlay();
     }
 
-    private void OnMouseExit()
+    public void OnDeselect(BaseEventData eventData)
     {
-        playText.DOColor(basicColor, changeDuration);
-        startDTrigger.ChangeDoorsStatus();
-        if (!lightMustBeON) lightPlay.SetActive(false);
+        DeselectPlay();
     }
 }
