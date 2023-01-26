@@ -24,7 +24,6 @@ public class PlayerDetectingObstacles : MonoBehaviour
     private void FrontCollisionDetection()
     {
         var damage = gameSets.GetDamge();
-        damage = 0;
         if (Physics.Raycast(transform.position + new Vector3(0, 0.8f, 0), Vector3.forward, out RaycastHit hitInfo, 0.65f))
         {
             if (hitInfo.collider.CompareTag("Obstacle"))
@@ -45,7 +44,6 @@ public class PlayerDetectingObstacles : MonoBehaviour
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         var damage = gameSets.GetDamge();
-        damage = 0;
         float vecX = hit.moveDirection.x;
         if (vecX > 0.9) 
         {
