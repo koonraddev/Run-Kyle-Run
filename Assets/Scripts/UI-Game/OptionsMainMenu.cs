@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class OptionsMainMenu : MonoBehaviour
 {
@@ -53,8 +55,21 @@ public class OptionsMainMenu : MonoBehaviour
     public GameObject backButtonObject;
     private Button backButton;
 
+    public GameObject applyButtonObject;
+    private Button applyButton;
+
     public GameObject optionsTriggerObject;
     private OptionsTrigger optionsTrigger;
+
+    GameObject gameOBJ;
+    public bool showOBJ;
+
+    public GameObject arrowObject;
+    public List<GameObject> mainActivableObjects;
+    private Image arrowPanel;
+
+    private GameObject currentActiveObject;
+    private GameObject lastActiveObject;
     void Start()
     {
         gameSets = gameController.GetComponent<GameSettings>();
@@ -84,6 +99,17 @@ public class OptionsMainMenu : MonoBehaviour
 
         optionsTrigger = optionsTriggerObject.GetComponent<OptionsTrigger>();
         SetButtonActive();
+
+        currentActiveObject = EventSystem.current.currentSelectedGameObject;
+        arrowPanel = arrowObject.GetComponentInChildren<Image>();
+
+
+        //arrowPanel.DOFade(0f, 0.5f).SetLoops(-1, LoopType.Yoyo);
+
+        Sequence mySequence = DOTween.Sequence();
+            mySequence.Append(arrowPanel.DOFade(0f, 1f).SetEase(Ease.InQuart).SetLoops(2,LoopType.Yoyo)).SetDelay(0.6f);        
+        
+        mySequence.SetLoops(-1, LoopType.Restart);
     }
 
     public void SetButtonActive()
@@ -97,9 +123,73 @@ public class OptionsMainMenu : MonoBehaviour
         gameObject.SetActive(false);
         optionsTrigger.SetButtonActive();
     }
+    void Update()
+    {
+        if (showOBJ)
+        {
+            gameOBJ = EventSystem.current.currentSelectedGameObject;
+            
+            //GameObject objPARENT = gameOBJ.transform.parent
+            Debug.Log(gameOBJ);
+        }
+        CheckActiveObject();
+    }
 
 
-    public void OnApplyButtonClick()
+    public void CheckActiveObject()
+    {
+        currentActiveObject = EventSystem.current.currentSelectedGameObject;
+        if (lastActiveObject != currentActiveObject)
+        {
+            foreach(GameObject activableObject in mainActivableObjects)
+            {
+                if (currentActiveObject == activableObject)
+                {
+                    lastActiveObject = currentActiveObject;
+                    if (currentActiveObject == applyButtonObject || currentActiveObject == backButtonObject)
+                    {
+                        arrowObject.transform.DOScaleX(0.3f, 0.2f);
+                        arrowObject.transform.DOLocalMoveY(currentActiveObject.transform.localPosition.y, 0.2f);
+                        arrowObject.transform.DOLocalMoveX(currentActiveObject.transform.localPosition.x, 0.2f);
+                    }
+                    else
+                    {
+                        arrowObject.transform.DOLocalMoveY(currentActiveObject.transform.localPosition.y, 0.2f);
+                        arrowObject.transform.DOLocalMoveX(354f, 0.2f);
+                        arrowObject.transform.DOScale(1f, 0.2f);
+                    }
+                    break;
+                }
+            }    
+        }
+    }
+
+    public void Scroll()
+    {
+        var siema = ressDropDown.transform.GetChild(3).gameObject;
+        var elo = siema.GetComponent<ScrollRect>();
+
+        showOBJ = true;
+        //siema.verticalScrollbar.transform.position = new Vector2(siema.verticalScrollbar.transform.position.x, 2);
+
+        //Scrollbar scrollbar = gameObject.GetComponentInChildren<ScrollRect>()?.verticalScrollbar;
+
+        //if (options.Count > 1 && scrollbar != null)
+        //{
+        //    if (scrollbar.direction == Scrollbar.Direction.TopToBottom)
+        //    {
+        //        scrollbar.value = Mathf.Max(0.001f, (float)(value) / (float)(options.Count - 1));
+        //    }
+        //    else
+        //    {
+        //        scrollbar.value = Mathf.Max(0.001f, 1.0f - (float)(value) / (float)(options.Count - 1));
+        //    }      
+        //
+        //}
+    }
+
+
+        public void OnApplyButtonClick()
     {
         var actualHintsON = hintsToggle.isOn;
         var actualFullscreenON = fullscreenToggle.isOn;
@@ -148,7 +238,6 @@ public class OptionsMainMenu : MonoBehaviour
         }
     }
 
-
     public void GetFullscreen()
     {
         int goFullscreen = PlayerPrefs.GetInt("fullscreen");
@@ -176,6 +265,7 @@ public class OptionsMainMenu : MonoBehaviour
             gameSets.SetFullscreen(0);
         }
     }
+
     public void GetDifficulty() { diffDropDown.value = PlayerPrefs.GetInt("difficulty"); }
 
     void SetDifficulty(int diffLevel)

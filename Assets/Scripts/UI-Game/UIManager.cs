@@ -14,14 +14,11 @@ public class UIManager : MonoBehaviour
 
     public GameObject distanceTriggerObject;
     private DistanceTrigger distTr;
-    public Vector2 hpON;
-    public Vector2 hpOFF;
+    public Vector2 barPanelON;
+    public Vector2 barPanelOFF;
 
-    public Vector2 powerON;
-    public Vector2 powerOFF;
-
-    public Vector2 distON;
-    public Vector2 distOFF;
+    public Vector2 distPanelON;
+    public Vector2 distPanelOFF;
 
     public Vector2 biomeON;
     public Vector2 biomeOFF;
@@ -33,28 +30,20 @@ public class UIManager : MonoBehaviour
     public Vector2 blackStripeOFF;
  
     //[Header("HPSiderPositionX")]
-    private float hpONPosX;
-    private float hpOFFPosX;
+    private float barPanelONPosX;
+    private float barPanelOFFPosX;
 
     //[Header("HPSiderPositionY")]
-    private float hpONPosY;
-    private float hpOFFPosY;
+    private float barPanelONPosY;
+    private float barPanelOFFPosY;
     
-    //[Header("powerSiderPositionX")]
-    private float powerONPosX;
-    private float powerOFFPosX;
-
-    //[Header("powerSiderPositionY")]
-    private float powerONPosY;
-    private float powerOFFPosY;
-
     //[Header("DistancePositionX")]
-    private float distONPosX;
-    private float distOFFPosX;
+    private float distPanelONPosX;
+    private float distPanelOFFPosX;
 
-    //[Header("DistancePositionY")]
-    private float distONPosY;
-    private float distOFFPosY;
+    //[Header("DistancePanelPositionY")]
+    private float distPanelONPosY;
+    private float distPanelOFFPosY;
 
     //[Header("BiomePositionX")]
     private float biomeONPosX;
@@ -80,6 +69,7 @@ public class UIManager : MonoBehaviour
     private float stripesONPosY;
     private float stripesOFFPosY;
 
+    public GameObject barPanel;
     public GameObject HPBar;
     private Slider HPSlider;
     public GameObject HPBarBackground;
@@ -90,6 +80,7 @@ public class UIManager : MonoBehaviour
     public GameObject powerBarBackground;
     private Slider powerSliderBackground;
 
+    public GameObject distancePanel;
     public GameObject distance;
     private TMP_Text distanceText;
 
@@ -148,7 +139,7 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         var step = speed * Time.deltaTime;
-        distanceText.text = "Distance " + distTr.distanceScaled.ToString() + "m";
+        distanceText.text = distTr.distanceScaled.ToString() + "m";
         HPSlider.value = playerHP.GetCurrentHP();
         powerSlider.value = gameCtr.GetPowerValue();
 
@@ -162,6 +153,7 @@ public class UIManager : MonoBehaviour
 
     public IEnumerator ShowBiome()
     {
+        HideRunUI();
         Sequence seqShow = DOTween.Sequence()
             .Append(stripeUPObject.transform.DOLocalMove(new Vector2(stripesONPosX, stripesONPosY), 0.5f).SetEase(Ease.Linear))
             .Join(stripeDownObject.transform.DOLocalMove(new Vector2(-stripesONPosX, -stripesONPosY), 0.5f).SetEase(Ease.Linear))
@@ -179,20 +171,28 @@ public class UIManager : MonoBehaviour
         seqHide.OnComplete( ()=> {
             seqShow.Kill();
             seqHide.Kill();
+            ShowRunUI();
         });
         
     }
 
     public void ShowRunUI()
     {
-        HPBar.transform.DOLocalMove(new Vector2(hpONPosX, hpONPosY), 0.5f).SetEase(Ease.Linear);
-        HPBarBackground.transform.DOLocalMove(new Vector2(hpONPosX, hpONPosY), 0.5f).SetEase(Ease.Linear);
-        powerBar.transform.DOLocalMove(new Vector2(powerONPosX, powerONPosY), 0.5f).SetEase(Ease.Linear);
-        powerBarBackground.transform.DOLocalMove(new Vector2(powerONPosX, powerONPosY), 0.5f).SetEase(Ease.Linear);
-        distance.transform.DOLocalMove(new Vector2(distONPosX, distONPosY), 0.5f).SetEase(Ease.Linear);
+        barPanel.transform.DOLocalMove(new Vector2(barPanelONPosX, barPanelONPosY), 0.5f).SetEase(Ease.Linear);
+        distancePanel.transform.DOLocalMove(new Vector2(distPanelONPosX, distPanelONPosY), 0.5f).SetEase(Ease.Linear);
         if (showHints == 1)
         {
             hintsObject.transform.DOLocalMove(new Vector2(hintsONPosX, hintsONPosY), 0.5f).SetEase(Ease.Linear);
+        }
+    }
+
+    public void HideRunUI()
+    {
+        barPanel.transform.DOLocalMove(new Vector2(barPanelOFFPosX, barPanelOFFPosY), 0.5f).SetEase(Ease.Linear);
+        distancePanel.transform.DOLocalMove(new Vector2(distPanelOFFPosX, distPanelOFFPosY), 0.5f).SetEase(Ease.Linear);
+        if (showHints == 1)
+        {
+            hintsObject.transform.DOLocalMove(new Vector2(hintsOFFPosX, hintsOFFPosY), 0.5f).SetEase(Ease.Linear);
         }
     }
 
@@ -201,31 +201,22 @@ public class UIManager : MonoBehaviour
         stripeUPObject.transform.localPosition = new Vector2(stripesOFFPosX, stripesOFFPosY);
         stripeDownObject.transform.localPosition = new Vector2(-stripesOFFPosX, -stripesOFFPosY);
         biomeObject.transform.localPosition = new Vector2(biomeOFFPosX, biomeOFFPosY);
-        HPBar.transform.localPosition = new Vector2(hpOFFPosX, hpOFFPosY);
-        HPBarBackground.transform.localPosition = new Vector2(hpOFFPosX, hpOFFPosY);
-        powerBar.transform.localPosition = new Vector2(powerOFFPosX, powerOFFPosY);
-        powerBarBackground.transform.localPosition = new Vector2(powerOFFPosX, powerOFFPosY);
-        distance.transform.localPosition = new Vector2(distOFFPosX, distOFFPosY);
+        barPanel.transform.localPosition = new Vector2(barPanelOFFPosX, barPanelOFFPosY);
+        distancePanel.transform.localPosition = new Vector2(distPanelOFFPosX, distPanelOFFPosY);
     }
     private void SetCords()
     {
-        hpONPosX = hpON.x;
-        hpONPosY = hpON.y;
+        barPanelONPosX = barPanelON.x;
+        barPanelONPosY = barPanelON.y;
 
-        hpOFFPosX = hpOFF.x;
-        hpOFFPosY = hpOFF.y;
+        barPanelOFFPosX = barPanelOFF.x;
+        barPanelOFFPosY = barPanelOFF.y;
 
-        powerONPosX = powerON.x;
-        powerONPosY = powerON.y;
+        distPanelONPosX = distPanelON.x;
+        distPanelONPosY = distPanelON.y;
 
-        powerOFFPosX = powerOFF.x;
-        powerOFFPosY = powerOFF.y;
-
-        distONPosX = distON.x;
-        distONPosY = distON.y;
-
-        distOFFPosX = distOFF.x;
-        distOFFPosY = distOFF.y;
+        distPanelOFFPosX = distPanelOFF.x;
+        distPanelOFFPosY = distPanelOFF.y;
 
         biomeONPosX = biomeON.x;
         biomeONPosY = biomeON.y;
@@ -249,7 +240,7 @@ public class UIManager : MonoBehaviour
     public void RunChangeStatus() 
     {
         runON = !runON;
-        ShowRunUI();
+        //ShowRunUI();
     }
 
     public void ChangeHPBackground()
