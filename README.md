@@ -1,4 +1,4 @@
-<h1><a href="https://kondixelo.itch.io/run-kyle-run">Run! Kyle Run!</a></h1>
+<h1><a href="https://koonraddev.itch.io/run-kyle-run">Run! Kyle Run!</a></h1>
 
 
 <table class="tg">
@@ -30,5 +30,6 @@
 </ul>
 
 
-<h2>ABOUT</h2>
-<p>Simple endless runner, first released version. No sound. Enjoy and don't forget give me a feedback :)</p>
+<h2>ABOUT PROJECT</h2>
+<p>The first project created in 3D. I used a system that generates the world on an ongoing basis along with the player's progress, using previously prepared prefabs. I became familiar with the basics of ProBuilder toolkit, the DOTween library and the TextMeshPro extension.</p>
+<p></p>
