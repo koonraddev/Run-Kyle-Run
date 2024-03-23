@@ -11,7 +11,7 @@
   </tr>
   <tr>
     <td><img src="screenshots/alpha_0.3/ss3.PNG" alt="screenshoot3"></td>
-    <td><img src="screenshots/alpha_0.2/s4.png" alt="screenshoot4"></td>
+    <td><img src="screenshots/alpha_0.2/s4.PNG" alt="screenshoot4"></td>
   </tr>
 </tbody>
 </table>
